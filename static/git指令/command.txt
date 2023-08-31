@@ -1,0 +1,86 @@
+### 版本號
+- git --version
+
+### 設定全域參數
+- git config --global user.name
+- git config --global user.email@gmail.com
+
+
+### 目前設定值
+- git config --list
+
+
+### 初始倉庫
+- git init (.git)
+
+### 檢視狀態
+- git status
+
+### 加入檔案
+- git add <filename>
+- git add . (一次將有變更的檔案確認)
+
+### 查看object內容
+- git cat-file -s sha1
+	- s (size)
+	- p (內容)
+	- t (型態)
+
+### 查看暫存區控管的檔案
+- git ls-files 
+- git ls-files -s 
+	- 查看完整資訊
+
+### 修改後 A==>M (M==>D)
+- git add <filename>
+	- 確定修改(刪除)
+- git restore <filename>
+ 	- 反悔修改
+
+### 儲存至倉庫區
+- git commit -am "memo"
+
+
+
+### 檢視commit的紀錄
+- git log
+- git log --oneline(一行輸出)
+
+
+### 修改上一次的commit紀錄
+- git commit --amend
+	- 開啟vim (i:insert  esc==> :wq)
+
+
+### 手動刪除(暫存區/倉庫區)
+- git restore <filename> 
+	- 恢復
+- git add <filename>
+	- 確認
+	- git restore --staged <filename>
+		- 恢復到手動刪除狀態
+
+### 倉庫區的刪除
+- 手動同上
+- git rm
+	- git commit 確認刪除
+	- git restore --staged <filename>
+		- 恢復到刪除狀態
+			- git restore <filename> 
+				- 恢復
+			- git add <filename>
+				- 確認
+
+
+### 暫存/倉庫移除到工作區 
+- git rm --cached <filename>
+
+
+### 檢視目前分支
+- git branch
+- 產生新分支
+	- git branch <branch-name> 
+- 切換分支
+	- git checkout <branch-name>
+
+
