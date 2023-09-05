@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Homepage{% endblock %}
+{% block content %}
+
+<style>
+    form {
+        background-color: antiquewhite;
+        width: 500px;
+        height: 500px;
+        border-radius: 6px;
+        margin: auto;
+        padding: 32px;
+        text-align: center;
+    }
+</style>
+
+<div class="order">
+    <form action="" method="post">
+        <label for="productName">商品名稱</label>
+        <input type="text" placeholder="productName" name="productName"><br>
+        <label for="price">商品金額</label>
+        <input type="text" placeholder="price" name="price"><br>
+        <label for="price">商品數量</label>
+        <input type="text" placeholder="amount" name="amount"><br>
+        <p>
+            <input type="submit" name="confirm" value="確認">
+            <input type="submit" name="cancel" value="取消">
+        </p>
+    </form>
+</div>
+
+{% endblock %}
