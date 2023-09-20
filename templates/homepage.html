@@ -1,109 +1,108 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
-
-    <style>
-        .image-container {
-            height: 300px;
-            overflow: hidden;
-            margin-bottom: 20px;
-        }
-    </style>
+{% extends "base.html" %}
+{% block title %}homepage{% endblock %}
+{% block content %}
 
 
-</head>
+<style>
+    .container {
+        width: 1100px;
+        max-width: 100%;
+        margin: 2 auto;
+    }
 
-<body>
-    <nav class="navbar has-shadow is-link">
-        <!-- logo -->
-        <div class="navbar-brand">
-            <a class="navbar-item">
-                <img src="../static/images/logo.png" alt="site logo" style="max-height: 70px">
-            </a>
-            <a class="navbar-burger" id="burger">
-                <span></span>
-                <span></span>
-                <span></span>
-            </a>
-        </div>
+    .row {
+        display: -webkit-inline-flex;
+        align-items: center;
+        justify-content: space-between;
+    }
 
-        <div class="navbar-menu" id="nav-links">
-            <div class="navbar-end">
-                <a class="navbar-item" href="/login">我的帳戶</a>
-                <a class="navbar-item">購物車 (0)</a>
+    .card {
+        width: 288px;
+    }
+</style>
+
+<div class="container">
+    <div class="row">
+        <div class="card">
+            <img src="../static/images/Diablo4.jpg" class="product_pic" alt="Diablo4.jpg">
+            <div class="card-body">
+                <h5 class="card-title">遊戲標題</h5>
+                <p class="card-text">遊戲簡介: 當前遊戲簡介
+                    <br>[PS4] 暗黑破壞神4
+                </p>
+                <p>
+                    <input type="submit" name="addtoCart" value="加入購物車"><br>
+                    <a href="#" class="btn">詳細資料</a>
+                </p>
             </div>
         </div>
-    </nav>
-    <!-- tabs -->
-    <div class="tabs">
-        <ul>
-            <li class="is-active"><a>Pictures</a></li>
-            <li><a>Music</a></li>
-            <li><a>Videos</a></li>
-            <li><a>Documents</a></li>
-        </ul>
-    </div>
-    <!-- poster -->
-    <div class="image-container">
-        <img src="../static/images/poster.avif" alt="poster" class="clipped-image">
-    </div>
-    <!-- tiles -->
-    <div class="tile is-ancestor">
-        <div class="tile is-vertical is-8">
-            <div class="tile">
-                <div class="tile is-parent is-vertical">
-                    <article class="tile is-child notification is-primary">
-                        <p class="title">Vertical...</p>
-                        <p class="subtitle">Top tile</p>
-                    </article>
-                    <article class="tile is-child notification is-warning">
-                        <p class="title">...tiles</p>
-                        <p class="subtitle">Bottom tile</p>
-                    </article>
-                </div>
-                <div class="tile is-parent">
-                    <article class="tile is-child notification is-info">
-                        <p class="title">Middle tile</p>
-                        <p class="subtitle">With an image</p>
-                        <figure class="image is-4by3">
-                            <img src="https://bulma.io/images/placeholders/640x480.png">
-                        </figure>
-                    </article>
-                </div>
-            </div>
-            <div class="tile is-parent">
-                <article class="tile is-child notification is-danger">
-                    <p class="title">Wide tile</p>
-                    <p class="subtitle">Aligned with the right tile</p>
-                    <div class="content">
-                        <!-- Content -->
-                    </div>
-                </article>
+        <div class="card">
+            <img src="../static/images/EldenRing.jpg" class="product_pic" alt="EldenRing.jpg">
+            <div class="card-body">
+                <h5 class="card-title">遊戲標題</h5>
+                <p class="card-text">遊戲簡介: 當前遊戲簡介
+                </p>
+                <p>
+                    <input type="submit" name="addtoCart" value="加入購物車"><br>
+                    <a href="#" class="btn">詳細資料</a>
+                </p>
             </div>
         </div>
-        <div class="tile is-parent">
-            <article class="tile is-child notification is-success">
-                <div class="content">
-                    <p class="title">Tall tile</p>
-                    <p class="subtitle">With even more content</p>
-                    <div class="content">
-                        <!-- Content -->
-                    </div>
-                </div>
-            </article>
+        <div class="card">
+            <img src="../static/images/NBA2K24.jpg" class="product_pic" alt="NBA2K24.jpg">
+            <div class="card-body">
+                <h5 class="card-title">遊戲標題</h5>
+                <p class="card-text">遊戲簡介: 當前遊戲簡介
+                </p>
+                <p>
+                    <input type="submit" name="addtoCart" value="加入購物車"><br>
+                    <a href="#" class="btn">詳細資料</a>
+                </p>
+            </div>
         </div>
     </div>
+    <div class="row">
+        <div class="card">
+            <img src="../static/images/Pokemon_scarlet.jpg" class="product_pic" alt="Pokemon_scarlet.jpg">
+            <div class="card-body">
+                <h5 class="card-title">遊戲標題</h5>
+                <p class="card-text">遊戲簡介: 當前遊戲簡介
+                    <br>[PS4] 暗黑破壞神4
+                </p>
+                <p>
+                    <input type="submit" name="addtoCart" value="加入購物車"><br>
+                    <a href="#" class="btn">詳細資料</a>
+                </p>
+            </div>
+        </div>
 
+        <div class="card">
+            <img src="../static/images/Pokemon_violet.jpg" class="product_pic" alt="Pokemon_violet.jpg">
+            <div class="card-body">
+                <h5 class="card-title">遊戲標題</h5>
+                <p class="card-text">遊戲簡介: 當前遊戲簡介
+                    <br>[PS4] 暗黑破壞神4
+                </p>
+                <p>
+                    <input type="submit" name="addtoCart" value="加入購物車"><br>
+                    <a href="#" class="btn">詳細資料</a>
+                </p>
+            </div>
+        </div>
+        <div class="card">
+            <img src="../static/images/Streetfighter6.jpg" class="product_pic" alt="Streetfighter6.jpg">
+            <div class="card-body">
+                <h5 class="card-title">遊戲標題</h5>
+                <p class="card-text">遊戲簡介: 當前遊戲簡介
+                    <br>[PS4] 暗黑破壞神4
+                </p>
+                <p>
+                    <input type="submit" name="addtoCart" value="加入購物車"><br>
+                    <a href="#" class="btn">詳細資料</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
 
-
-
-
-    <script src="../static/js/hidebar.js"></script>
-</body>
-
-</html>
+{% endblock %}
