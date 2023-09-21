@@ -90,14 +90,24 @@ def register():
         return render_template("register.html")
 
 
-def get_product_by_id(product_id):
-    id = request.form[id]
-    conn = sqlite3.connect('account.db')
+def get_product_details(product_id):
+    # Connect to the SQLite database
+    conn = sqlite3.connect('products.db')
     cursor = conn.cursor()
-    cursor.execute("SELECT good_name, price FROM goods WHERE id = '"+id+"'")
+
+    # Query the database for the product details based on product_id
+    sqlstr = "select name, price FROM goods WHERE product_id='"+product_id+"'"
+    cursor.execute(sqlstr)
     product = cursor.fetchone()
+
+    # Close the database connection
     conn.close()
-    return product
+
+    if product:
+        # Return the product details as a dictionary
+        return {'name': product[0], 'price': product[1]}
+    else:
+        return None
 
 
 @app.route('/add_to_cart/<int:product_id>')
@@ -108,7 +118,7 @@ def add_to_cart(product_id):
     cart = session['cart']
 
     # Retrieve product data from the SQLite database
-    product = get_product_by_id(product_id)
+    product = get_product_details(product_id)
 
     if product:
         if product_id in cart:
