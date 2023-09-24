@@ -1,26 +1,34 @@
 {% extends "base.html" %}
 {% block title %}cart{% endblock %}
 {% block content %}
-<h1>Shopping Cart</h1>
-    <table>
-        <tr>
-            <th>Product</th>
-            <th>Price</th>
-            <th>Action</th>
-        </tr>
-        {% for product_id, item in cart.items() %}
-        <tr>
-            <td>{{ item.name }}</td>
-            <td>${{ item.price }}</td>
-            <td>
-                <form action="/remove_from_cart/{{ product_id }}" method="post">
-                    <input type="submit" value="Remove">
-                </form>
-            </td>
-        </tr>
-        {% endfor %}
-    </table>
-    <p>Total: ${{ total_price }}</p>
 
+<body>
+    <h1>Shopping Cart</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if cart %}
+            {% for item in cart %}
+            <ul>
+                <li>{{ item.name }}</li>
+                <li>{{ item.price }}</td>
+            </ul>
+            {% endfor %}
+            {% else %}
+            <tr>
+                <td colspan="2">Your cart is empty.</td>
+            </tr>
+            {% endif %}
+        </tbody>
+    </table>
+
+    <a href="/">Continue Shopping</a>
+</body>
 
 {% endblock %}
