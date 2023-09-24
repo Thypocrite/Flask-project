@@ -24,17 +24,20 @@
 <div class="container">
     <div class="row">
         <div class="card">
-            <img src="../static/images/Diablo4.jpg" class="product_pic" alt="Diablo4.jpg">
-            <div class="card-body">
-                <h5 class="card-title">遊戲標題</h5>
-                <p class="card-text">遊戲簡介: 當前遊戲簡介
-                    <br>[PS4] 暗黑破壞神4
-                </p>
-                <p>
-                    <input type="submit" name="addtoCart" value="加入購物車"><br>
-                    <a href="#" class="btn">詳細資料</a>
-                </p>
-            </div>
+            <form action="/add_to_cart" method="post">
+                <img src="../static/images/Diablo4.jpg" class="product_pic" alt="Diablo4.jpg">
+                <div class="card-body">
+                    <h5 class="card-title">遊戲標題</h5>
+                    <p class="card-text">遊戲簡介: 當前遊戲簡介
+                        <br>[PS4] 暗黑破壞神4
+                    </p>
+                    <p>
+                        <input type="hidden" name="product_id" value="3">
+                        <input type="submit" name="add_to_cart" value="加入購物車"><br>
+                        <a href="#" class="btn">詳細資料</a>
+                    </p>
+                </div>
+            </form>
         </div>
         <div class="card">
             <img src="../static/images/EldenRing.jpg" class="product_pic" alt="EldenRing.jpg">

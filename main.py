@@ -92,7 +92,7 @@ def register():
 
 def get_product_details(product_id):
     # Connect to the SQLite database
-    conn = sqlite3.connect('products.db')
+    conn = sqlite3.connect('account.db')
     cursor = conn.cursor()
 
     # Query the database for the product details based on product_id
@@ -110,45 +110,41 @@ def get_product_details(product_id):
         return None
 
 
-@app.route('/add_to_cart/<int:product_id>')
-def add_to_cart(product_id):
-    if 'cart' not in session:
-        session['cart'] = {}
-
-    cart = session['cart']
-
-    # Retrieve product data from the SQLite database
-    product = get_product_details(product_id)
-
-    if product:
-        if product_id in cart:
-            cart[product_id]['quantity'] += 1
-        else:
-            cart[product_id] = {'name': product[1],
-                                'price': product[2], 'quantity': 1}
-
-    session['cart'] = cart
-    return redirect(url_for('home'))
+cart = []
 
 
-@app.route('/cart')
-def cart():
-    cart = session.get('cart', {})
-    total_price = sum(item['price'] * item['quantity']
-                      for item in cart.values())
-    return render_template('cart.html', cart=cart, total_price=total_price)
+@app.route('/add_to_cart', methods=["GET", "POST"])
+def add_to_cart():
+    product_id = request.form["product_id"]
+    print(get_product_details(product_id))
+    return product_id
+
+    # product = get_product_details(product_id)
+
+    # if product:
+    #     # Add the product to the shopping cart
+    #     cart.append(product)
+    #     session['cart'] = cart  # Store the cart in the session
+    # return redirect(url_for('homepage'))
+
+# @app.route('/cart')
+# def cart():
+#     cart = session.get('cart', {})
+#     total_price = sum(item['price'] * item['quantity']
+#                       for item in cart.values())
+#     return render_template('cart.html', cart=cart, total_price=total_price)
 
 
-@app.route('/remove_from_cart/<int:product_id>')
-def remove_from_cart(product_id):
-    cart = session.get('cart', {})
-    if product_id in cart:
-        del cart[product_id]
-        session['cart'] = cart
-    return redirect(url_for('cart'))
+# @app.route('/remove_from_cart/<int:product_id>')
+# def remove_from_cart(product_id):
+#     cart = session.get('cart', {})
+#     if product_id in cart:
+#         del cart[product_id]
+#         session['cart'] = cart
+#     return redirect(url_for('cart'))
 
 
 if __name__ == "__main__":
-    # app.run(debug=True)
-    port = int(os.environ.get('PORT', 5000))
-    app.run(host='0.0.0.0', port=port)
+    app.run(debug=True)
+    # port = int(os.environ.get('PORT', 5000))
+    # app.run(host='0.0.0.0', port=port)
