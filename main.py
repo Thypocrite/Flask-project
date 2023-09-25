@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, redirect, url_for, session
+from flask import Flask, request, render_template, redirect, url_for, session, flash
 import sqlite3
 
 
@@ -96,7 +96,7 @@ def get_product_details(product_id):
     cursor = conn.cursor()
 
     # Query the database for the product details based on product_id
-    sqlstr = "select product_id name, price FROM goods WHERE product_id='"+product_id+"'"
+    sqlstr = "select product_id, name, price, image_url FROM goods WHERE product_id='"+product_id+"'"
     cursor.execute(sqlstr)
     product = cursor.fetchone()
 
@@ -105,7 +105,7 @@ def get_product_details(product_id):
 
     if product:
         # Return the product details as a dictionary
-        return {'name': product[0], 'price': product[1]}
+        return {'name': product[1], 'price': product[2], 'image_url': product[3]}
     else:
         return None
 
@@ -121,8 +121,19 @@ def add_to_cart():
         if 'cart' not in session:
             session['cart'] = []
         # Add the selected product to the cart
-        product_details['product_id'] = product_id
-        session['cart'].append(product_details)
+        for item in session['cart']:
+            if item['product_id'] == product_id:
+                # Product is already in the cart
+                flash('This item is already in your cart.', 'warning')
+
+        if product_id not in session['cart']:
+            cart_list = session['cart']
+            product_details['product_id'] = product_id
+            cart_list.append(product_details)
+            session['cart'] = cart_list
+
+        # product_details['product_id'] = product_id
+        # session['cart'].append(product_details)
         return redirect('/homepage')  # Redirect back to the product page
     else:
         return "Product not found"  # Handle the case where the product doesn't exist
@@ -177,10 +188,8 @@ def check_cart():
     if 'cart' in session:
         # Get the cart data from the session
         cart_data = session['cart']
-
         # Print or log the cart data for inspection
         print(cart_data)
-
         # You can also return the cart data as a response to display it in the browser
         return f'Cart Data: {cart_data}'
     else:

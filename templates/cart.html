@@ -1,6 +1,16 @@
 {% extends "base.html" %}
 {% block title %}cart{% endblock %}
 {% block content %}
+<style>
+    .card {
+        width: 288px;
+        align-items: center;
+        display: -webkit-inline-flex;
+        justify-content: space-between;
+        margin: 2 auto;
+    }
+</style>
+
 
 <body>
     <h1>Shopping Cart</h1>
@@ -15,16 +25,27 @@
         <tbody>
             {% if cart %}
             {% for item in cart %}
-            <ul>
-                <li>{{ item.name }}</li>
-                <li>{{ item.price }}</td>
-            </ul>
+            <div class="card">
+                <ul>
+                    <li><img src="{{item.image_url}}" alt="{{item.name}}"> </li>
+                    <li>{{ item.name }}</li>
+                    <li>{{ item.price }}</td>
+                    <li>
+                        <!-- Add a "Remove" button with a form -->
+                        <form method="POST" action="/remove_from_cart">
+                            <h1>{{ item.product_id }}</h1>
+                            <input type="hidden" name="product_id" value="{{ item.product_id }}">
+                            <button type="submit">Remove</button>
+                        </form>
+                    </li>
+                </ul>
+            </div>
             {% endfor %}
             {% else %}
             <tr>
                 <td colspan="2">Your cart is empty.</td>
-            </tr>
-            {% endif %}
+                </div>
+                {% endif %}
         </tbody>
     </table>
 
