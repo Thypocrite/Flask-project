@@ -96,7 +96,7 @@ def get_product_details(product_id):
     cursor = conn.cursor()
 
     # Query the database for the product details based on product_id
-    sqlstr = "select product_id, name, price, image_url FROM goods WHERE product_id='"+product_id+"'"
+    sqlstr = "select product_id, name, price, image_url FROM products WHERE product_id='"+product_id+"'"
     cursor.execute(sqlstr)
     product = cursor.fetchone()
 
@@ -132,9 +132,10 @@ def add_to_cart():
             cart_list.append(product_details)
             session['cart'] = cart_list
 
+            total_price = sum(item['price'] for item in cart_list)
         # product_details['product_id'] = product_id
         # session['cart'].append(product_details)
-        return redirect('/homepage')  # Redirect back to the product page
+        return render_template('homepage.html', cart_list=cart_list, total_price=total_price)
     else:
         return "Product not found"  # Handle the case where the product doesn't exist
 
