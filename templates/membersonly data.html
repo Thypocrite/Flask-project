@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Game TIME 會員專區</title>
+    <title>Game TIME 會員資料</title>
 
 <style>
     body{
@@ -53,7 +53,6 @@
         top: -250px;
         line-height: 80px;
         color: white
-        font-size: 30px;
     }
 
     .header ul {
@@ -62,12 +61,14 @@
         top:-240px;
         line-height: 80px;
         font-size: 17px;
+       
     }
 
-    .header li {
+    .header li{
         display:inline;
         color: white;
         margin-right: 20px;
+        
     }
     .header a{
         color: white;
@@ -87,37 +88,67 @@
     .header div span{
         color: #FFEB58 !important;
     }
-    .menu ol{
+    .menur{
         position: absolute;
-        top: calc(1% - 200px);
+        top: calc(1% - 150px);
         left: calc(80% - 300px);
-        height: 200px;
-        width: 130px;
-        padding: 40px;
-        font-size: 27px;
+        height: 400px;
+        width: 200px;
+        font-size: 20px;
+        margin-bottom: 30px;
         
     }
-    .menu li{
+    .menur li{
         text-align:center;
+        
     }
-    .menu a{
+    .menur a{
         color: white;
         text-decoration:none;   
     }
-    .menu a:hover{
+    .menur a:hover{
         text-decoration:underline;
     }
     .memb{
         position: absolute;
         top: calc(50% - 200px);
-        left: calc(50% - 200px);
-        height: 400px;
-        width: 600px;
+        left: calc(50% - 250px);
+        height: 350px;
+        width: 500px;
         color: white;
+        background-color: #4D3544a3;
         border-radius: 30px;
-        padding: 10px;
         font-size: 30px;
+        
     }
+    
+    .memb li{
+        font-size: 25px;
+        list-style-type:circle;
+        margin-bottom: 10px;
+    }
+    .hot{
+        position: absolute;
+        top: calc(60% - 42px);
+        left: calc(100% - 0px);
+        height: 180px;
+        width: 200px;
+        background-color: #778899a3;
+        border-radius: 30px;
+        font-size: 25px;
+    }
+    
+    .Eventdiscounts{
+        position: absolute;
+        top: calc(50% - 257px);
+        left: calc(50% - 100px);
+        height: 150px;
+        width: 200px;
+        background-color: #D3D3D3a3;
+        border-radius: 30px;
+        font-size: 25px;
+    }
+    
     ::-webkit-input-placeholder{
        color: rgba(255,255,255,0.6);
     }
@@ -133,7 +164,7 @@
         <div class="grad"></div>
         <div class="header">
             <header>
-            <h1>Game TIME 會員專區</h1>
+            <h1>Game TIME 會員資料</h1>
             <nav>
             <ul>
                 <li><a href="#">回到首頁</a></li>
@@ -145,19 +176,28 @@
             </nav>
             </header>
     <menu>    
-    <div class="menu">
-    <ol>
-        <li><a href="/membersonly/data">會員資料</a></li>
-        <li><a href="#">購物車</a></li>
-        <li><a href="/purchasehistory">購買紀錄</a></li>
-        <li><a href="/changePassword">重設密碼</a></li>
-    </menu>       
-    </ol>    
+        <div class="menur">
+        <ol>
+            <li><a href="/membersonly/data">會員資料</a></li>
+            <li><a href="#">購物車</a></li>
+            <li><a href="/purchasehistory">購買紀錄</a></li>
+            <li><a href="/changePassword">重設密碼</a></li>
+        </ol> 
+    </menu>           
     </div>
     <main>
-	<div class="memb">
-        <p>歡迎 {{name}} !</p> 
-
+	        <div class="memb">
+                <p>歡迎 {{name}} !</p>
+                    <ul>
+                        <li>電子郵件 : {{email}}</li>
+		                <li>手機號碼 : {{phonenumber}}</li>
+                        <li>生日 : {{birthday}}</li>
+                        <li>地址 : {{address}}</li>
+                    </ul>
+        <div class="hot">
+            <P>熱門推薦</P>
+    <div class="Eventdiscounts">
+            <p>活動折扣</p>
     </main>
 
 </body>

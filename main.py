@@ -1,7 +1,6 @@
 from flask import Flask, request, render_template, redirect, url_for, session, flash
 import sqlite3
 
-
 app = Flask(__name__)
 app.secret_key = 'apple benanan key'
 
@@ -13,93 +12,154 @@ def index():
 
 @app.route('/homepage')
 def homepage():
-    return render_template("homepage.html")
+    conn = sqlite3.connect('merged.db')
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM products LIMIT 12")
+    products = cursor.fetchall()
+    conn.close()
+    return render_template("homepage.html", products=products)
 
 
-@app.route("/membersonly")
+@app.route('/membersonly/data')
 def membersonly():
-    return render_template("membersonly.html")
+    if 'user' in session:
+        user = session['user']
+        connection = sqlite3.connect('merged.db')
+        cur = connection.cursor().execute("select * from lccnet where user='"+user+"'")
+        records = cur.fetchone()
+        email = records[1]
+        name = records[3]
+        phonenumber = records[4]
+        birthday = records[5]
+        address = records[6]
+        return render_template('membersonly data.html', email=email, name=name, phonenumber=phonenumber, birthday=birthday, address=address)
+    return "您暫未登入， <br><a href = '/login'></b>" + \
+        "點選這裡登入</b></a>"
 
 
-@app.route("/login", methods=["GET", "POST"])
+@app.route('/login', methods=['POST', 'GET'])
 def login():
-    if "username" in session:
-        username = session["username"]
-        return render_template("membersonly.html")
-    if request.method == "POST":
-        if request.form.get("register") == "register":
-            return redirect(url_for("register"))
-        username = request.form["username"]
-        password = request.form["password"]
+    if 'user' in session:
+        user = session['user']
+        connection = sqlite3.connect('merged.db')
+        cur = connection.cursor().execute("select * from lccnet where user='"+user+"'")
+        records = cur.fetchone()
+        name = records[3]
+        return render_template('membersonly.html', name=name)
+    if request.method == 'POST':
+        if request.form.get("reg") == "REGISTER":
+            return redirect(url_for("reg"))
+        user = request.form['user']
+        passwd = request.form['passwd']
 
-        conn = sqlite3.connect("account.db")
+        conn = sqlite3.connect('merged.db')
         cursor = conn.cursor()
-        sqlstr = "select password from members where username='"+username+"'"
+        sqlstr = "select passwd from lccnet where user='"+user+"'"
         cursor.execute(sqlstr)
         data = cursor.fetchone()
-
         if data == None:
-            login_message = "溫馨提示:用戶不存在,請先註冊"
-            return render_template('login.html', message=login_message)
+            login_massage = "溫馨提示:用戶不存在,請先註冊"
+            return render_template('login.html', message=login_massage)
         else:
-            if data[0] == password:
-                session["username"] = username
-                return redirect(url_for("membersonly"))
+            if data[0] == passwd:
+                session['user'] = user
+                connection = sqlite3.connect('merged.db')
+                cur = connection.cursor().execute("select * from lccnet where user='"+user+"'")
+                records = cur.fetchone()
+                name = records[3]
+                return render_template('membersonly.html', name=name)
             else:
-                login_message = "溫馨提示:密碼不正確,請確認"
-                return render_template('login.html', message=login_message)
-
+                login_massage = "溫馨提示:密碼不正確,請確認"
+                return render_template('login.html', message=login_massage)
     else:
-        return render_template("login.html")
+        return render_template('login.html')
 
 
 @app.route("/logout")
 def logout():
-    session.pop("username", None)
+    session.pop("user", None)
     return render_template("login.html")
 
 
-@app.route('/register', methods=["GET", "POST"])
-def register():
+@app.route('/reg', methods=['POST', 'GET'])
+def reg():
     if request.method == 'POST':
-        username = request.form["username"]
-        password = request.form["password"]
-        name = request.form["name"]
-        phonenumber = request.form["phonenumber"]
-        birthday = request.form["birthday"]
-        address = request.form["address"]
-        email = request.form["email"]
-
-        conn = sqlite3.connect("account.db")
-        cursor = conn.cursor()
-        sqlstr = "INSERT INTO members('username','password','email') values('" + \
-            username+"','"+password+"','"+name+"','"+phonenumber + \
-            "','"+birthday+"','"+address+"','"+email+"')"
-        cursor.execute(sqlstr)
+        user = request.form['user']
+        passwd = request.form['passwd']
+        name = request.form['name']
+        phonenumber = request.form['phonenumber']
+        birthday = request.form['birthday']
+        address = request.form['address']
+        conn = sqlite3.connect('merged.db')
+        cursor = conn.cursor().execute("INSERT INTO lccnet('user','passwd','name','phonenumber','birthday','address') values('" +
+                                       user+"','"+passwd+"','"+name+"','"+phonenumber+"','"+birthday+"','"+address+"')")
         conn.commit()
-        sqlstr = "select password from members where username='"+username+"'"
+
+        sqlstr = "select user from lccnet where user='"+user+"'"
         cursor.execute(sqlstr)
         data = cursor.fetchone()
-
         if data == None:
-            login_message = "溫馨提示:註冊失敗"
-            return render_template("register.html", message=login_message)
+            reg_massage = "溫馨提示:註冊失敗"
+            return render_template('reg.html', message=reg_massage)
         else:
-            return render_template("membersonly.html")
+            login_massage = "溫馨提示:帳號已註冊 請進行登入確認"
+            return render_template('login.html', message=login_massage)
     else:
-        return render_template("register.html")
+        return render_template('reg.html')
+
+
+@app.route('/changePassword', methods=['POST', 'GET'])
+def changePassword():
+    if 'user' in session:
+        user = session['user']
+    if request.method == 'POST':
+        orpasswd = request.form['orpasswd']
+        nepasswd = request.form['nepasswd']
+        passwdag = request.form['passwdag']
+        connection = sqlite3.connect('merged.db')
+        cur = connection.cursor().execute("select passwd from lccnet where user='"+user+"'")
+        records = cur.fetchone()
+        print(records[0])
+        if records[0] == orpasswd and records[0] != nepasswd and records[0] != passwdag[0] and nepasswd == passwdag:
+            print(nepasswd)
+            connection = sqlite3.connect('merged.db')
+            user = session['user']
+            cur = connection.cursor().execute("UPDATE lccnet SET passwd = '" +
+                                              nepasswd+"' WHERE user = '"+user+"'")
+            connection.commit()
+            changePassword_massage = "溫馨提示:修改成功"
+            return render_template('changePassword.html', message=changePassword_massage)
+        elif nepasswd != passwdag:
+            changePassword_massage = "溫馨提示:新密碼&確認密碼不相符"
+            return render_template('changePassword.html', message=changePassword_massage)
+        else:
+            changePassword_massage = "溫馨提示:原始密碼不正確"
+            return render_template('changePassword.html', message=changePassword_massage)
+    else:
+        return render_template('changePassword.html')
+
+
+@app.route('/purchasehistory')
+def purchasehistory():
+    if 'user' in session:
+        user = session['user']
+        connection = sqlite3.connect('merged.db')
+        cur = connection.cursor().execute(
+            "select listmenu,liatprice from totall where user='"+user+"'")
+        rows = cur.fetchall()
+        return render_template('purchasehistory.html', rows=rows)
+    else:
+        return render_template('purchasehistory.html')
 
 
 def get_product_details(product_id):
     # Connect to the SQLite database
-    conn = sqlite3.connect('account.db')
+    conn = sqlite3.connect('merged.db')
     cursor = conn.cursor()
-
     # Query the database for the product details based on product_id
-    sqlstr = "select product_id, name, price, image_url FROM products WHERE product_id='"+product_id+"'"
+    sqlstr = "select salePageId, title, price, image_url FROM products WHERE salePageId='"+product_id+"'"
     cursor.execute(sqlstr)
     product = cursor.fetchone()
-
     # Close the database connection
     conn.close()
 
@@ -112,19 +172,19 @@ def get_product_details(product_id):
 
 @app.route('/add_to_cart', methods=["POST"])
 def add_to_cart():
+    if 'user' not in session:
+        return "<h1>您暫未登入， <br><a href = '/login'><b>" + \
+            "點選這裡登入</b></a></h1>"
+
     product_id = request.form.get('product_id')
     # Fetch the product details based on product_id (you can use your existing get_product_details function)
     product_details = get_product_details(product_id)
 
     if product_details:
         # Check if a cart exists in the session, and initialize an empty cart if not
+        return render_template('login.html')
         if 'cart' not in session:
             session['cart'] = []
-        # Add the selected product to the cart
-        for item in session['cart']:
-            if item['product_id'] == product_id:
-                # Product is already in the cart
-                flash('This item is already in your cart.', 'warning')
 
         if product_id not in session['cart']:
             cart_list = session['cart']
@@ -195,6 +255,16 @@ def check_cart():
         return f'Cart Data: {cart_data}'
     else:
         return 'Cart is empty.'
+
+
+@app.route("/testing")
+def testing():
+    conn = sqlite3.connect('merged.db')
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM products LIMIT 30")
+    products = cursor.fetchall()
+    conn.close()
+    return render_template("testing.html", products=products)
 
 
 if __name__ == "__main__":

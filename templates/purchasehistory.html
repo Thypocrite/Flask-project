@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Game TIME 登入</title>
+    <title>Game TIME 購買紀錄</title>
 
 <style>
     body{
@@ -88,103 +88,43 @@
     .content div span{
         color: #FFEB58 !important;
     }
-    
-    .login{
+	.menu{
         position: absolute;
-        top: calc(25% - 58px);
-        left: calc(50% - 0px);
-        height: 100px;
+        top: calc(1% - 150px);
+        left: calc(80% - 300px);
+        height: 400px;
         width: 200px;
-        padding: 10px;
-        z-index: 9;
+        font-size: 30px;
+        
+    }
+    .menu ul{
+        text-align:left;
+		list-style: none;
+        
+    }
+    .menu a{
+        color: white;
+        text-decoration:none;   
+    }
+    .menu a:hover{
+        text-decoration:underline;
     }
     
-    .login input[type=email]{
-        width: 500px;
-        height: 30px;
-        background: transparent;
-        border: 1px solid rgba(255,255,255,0.6);
-        border-radius: 2px;
-        color: #fff;
-        font-family: 'Exo', sans-serif;
+    .purchasehistory{
+		position: absolute;
+		top: calc(10% - 170px);
+		left: calc(80% - 20px);
+		height: 400px;
+		width: 700px;
+		padding: 10px;
+        color: white;
+        background-color: #4D3544a3;
+        border-radius: 30px;
         font-size: 20px;
-        font-weight: 400;
-        padding: 4px;
-    }
-    
-    .login input[type=password]{
-        width: 500px;
-        height: 30px;
-        background: transparent;
-        border: 1px solid rgba(255,255,255,0.6);
-        border-radius: 2px;
-        color: #F7F9FC;
-        font-family: 'Exo', sans-serif;
-        font-size: 20px;
-        font-weight: 400;
-        padding: 4px;
-        margin-top: 10px;
-    }
-    
-    .login input[type=text]{
-        width: 250px;
-        height: 30px;
-        background: transparent;
-        border: 1px solid rgba(255,255,255,0.6);
-        border-radius: 2px;
-        color: #a18d6c;
-        font-family: 'Exo', sans-serif;
-        font-size: 20px;
-        font-weight: 400;
-        padding: 4px;
-        margin-top: 10px;
-    }
-    
-    .login input[type=submit]{
-        width: 90px;
-        height: 35px;
-        background: #fff;
-        border: 1px solid #fff;
-        cursor: pointer;
-        border-radius: 2px;
-        color: #a18d6c;
-        font-family: 'Exo', sans-serif;
-        font-size: 15px;
-        font-weight: 400;
-        padding: 6px;
-        margin-top: 10px;
-    }
-    
-    .login input[type=button]:hover{
-        opacity: 0.8;
-    }
-    
-    .login input[type=button]:active{
-        opacity: 0.6;
-    }
-    
-    .login input[type=text]:focus{
-        outline: none;
-        border: 1px solid rgba(255,255,255,0.9);
-    }
-    
-    .login input[type=password]:focus{
-        outline: none;
-        border: 1px solid rgba(255,255,255,0.9);
-    }
-    
-    .login input[type=button]:focus{
-        outline: none;
-    }
-    .flashes ul{
-        width: 300px;
-        height: 35px;
-    }
-    .flashes li{
-        width: 300px;
-        height: 35px;
-    }
-    
+		z-index: 9;
+	}
+	
+	
     ::-webkit-input-placeholder{
        color: rgba(255,255,255,0.6);
     }
@@ -200,7 +140,7 @@
         <div class="grad"></div>
         <div class="header">
             <header>
-            <h1>Game TIME 登入</h1>
+            <h1>Game TIME 購買紀錄</h1>
             </header>
         <nav>
         <div class="content">
@@ -210,18 +150,35 @@
                 <li><a href="#">關於我們</a></li>
                 <li><a href="#">購物車</a></li>
             </ul>
-        </nav>        
-        <main>
-	    <div class="login">
-		<form action = "/login" method ="post">
-				<input type ="email" placeholder ="username" name = "user"><br>
-				<input type ="password" placeholder ="password" name = "passwd"><br>
-				<input type="submit" name="login" value="SIGN IN">
-				<input type="submit" name="reg" value="REGISTER">
-                <ul class=flashes>
-                    <li>{{ message }}</li>   
-                </ul>
-        </main>	
+        </nav>
+	<menu>
+	<div class="menu">
+	<ul>
+		<li><a href="/membersonly/data">會員資料</a></li>
+		<li><a href="#">購物車</a></li>
+		<li><a href="/purchasehistory">購買紀錄</a></li>
+		<li><a href="/changePassword">重設密碼</a></li>
+	</ul> 
+	</menu>        
+	<main>
+		<div class="purchasehistory">
+			<h3>購買紀錄</h3>
+			<form action = "/purchasehistory">
+                <table border = 1>
+                    <thead>
+                       <td>已購買品項</td>
+                       <td>NT$</td>
+                    </thead>
+                    {% for row in rows %}
+                        <tr>
+                            <td>{{row[0]}}</td>
+                            <td>{{row[1]}}</td>
+                   
+                        </tr>
+                    {% endfor %}
+                
+		</main>
+	
 		</form>
 	</div>
 </body>

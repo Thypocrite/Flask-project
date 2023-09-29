@@ -3,124 +3,52 @@
 {% block content %}
 
 
-<style>
-    .container {
-        width: 1100px;
-        max-width: 100%;
-        margin: 2 auto;
-    }
 
-    .row {
-        display: -webkit-inline-flex;
-        align-items: center;
-        justify-content: space-between;
-    }
+<!DOCTYPE html>
+<html>
 
-    .card {
-        width: 288px;
-    }
-</style>
+<head>
+    <title>Home Page</title>
+    <style>
+        /* Add CSS styling as needed */
 
-<div class="container">
-    <div class="row">
-        <div class="card">
-            <form action="/add_to_cart" method="POST">
-                <img src="../static/images/Diablo4.jpg" class="product_pic" alt="Diablo4.jpg">
-                <div class="card-body">
-                    <h5 class="card-title">遊戲標題</h5>
-                    <p class="card-text">遊戲簡介: 當前遊戲簡介
-                        <br>[PS4] 暗黑破壞神4
-                    </p>
-                    <p>
-                        <input type="hidden" name="product_id" value="3">
-                        <input type="submit" name="add_to_cart" value="加入購物車"><br>
-                        <a href="#" class="btn">詳細資料</a>
-                    </p>
-                </div>
-            </form>
-        </div>
-        <div class="card">
-            <form action="/add_to_cart" method="POST">
-                <img src="../static/images/EldenRing.jpg" class="product_pic" alt="EldenRing.jpg">
-                <div class="card-body">
-                    <h5 class="card-title">遊戲標題</h5>
-                    <p class="card-text">遊戲簡介: 當前遊戲簡介
-                    </p>
-                    <p>
-                        <input type="hidden" name="product_id" value="5">
-                        <input type="submit" name="add_to_cart" value="加入購物車"><br>
-                        <a href="#" class="btn">詳細資料</a>
-                    </p>
-                </div>
-        </div>
-        </form>
-        <div class="card">
-            <form action="/add_to_cart" method="POST">
-                <img src="../static/images/NBA2K24.jpg" class="product_pic" alt="NBA2K24.jpg">
-                <div class="card-body">
-                    <h5 class="card-title">遊戲標題</h5>
-                    <p class="card-text">遊戲簡介: 當前遊戲簡介
-                    </p>
-                    <p>
-                        <input type="hidden" name="product_id" value="4">
-                        <input type="submit" name="addtoCart" value="加入購物車"><br>
-                        <a href="#" class="btn">詳細資料</a>
-                    </p>
-                </div>
-            </form>
+
+        .product {
+            width: 20%;
+            /* Set the width of each product to fit four in a row */
+            margin: 1%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            display: inline-block;
+            vertical-align: top;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="product-list">
+            {% for product in products %}
+            <div class="product">
+                <img src="{{ product[3] }}" alt="{{ product[3] }}">
+                <h3>{{ product[1] }}</h3>
+                <p>Price: ${{ product[2] }}</p>
+                <!-- Add other product details and formatting as needed -->
+                <input type="hidden" name="product_id" value="{{ product[0] }}">
+                <input type="submit" name="add_to_cart" value="加入購物車"><br>
+
+            </div>
+            {% if loop.index % 4 == 0 %}
+            <div style="clear: both;"></div> <!-- Clear the float every four products -->
+            {% endif %}
+            {% endfor %}
         </div>
     </div>
-    <div class="row">
-        <div class="card">
-            <form action="/add_to_cart" method="POST">
-                <img src="../static/images/Pokemon_scarlet.jpg" class="product_pic" alt="Pokemon_scarlet.jpg">
-                <div class="card-body">
-                    <h5 class="card-title">遊戲標題</h5>
-                    <p class="card-text">遊戲簡介: 當前遊戲簡介
-                        <br>[PS4] 暗黑破壞神4
-                    </p>
-                    <p>
-                        <input type="hidden" name="product_id" value="1">
-                        <input type="submit" name="addtoCart" value="加入購物車"><br>
-                        <a href="#" class="btn">詳細資料</a>
-                    </p>
-                </div>
-            </form>
-        </div>
+</body>
 
-        <div class="card">
-            <form action="/add_to_cart" method="POST">
-                <img src="../static/images/Pokemon_violet.jpg" class="product_pic" alt="Pokemon_violet.jpg">
-                <div class="card-body">
-                    <h5 class="card-title">遊戲標題</h5>
-                    <p class="card-text">遊戲簡介: 當前遊戲簡介
-                        <br>[PS4] 暗黑破壞神4
-                    </p>
-                    <p>
-                        <input type="hidden" name="product_id" value="2">
-                        <input type="submit" name="addtoCart" value="加入購物車"><br>
-                        <a href="#" class="btn">詳細資料</a>
-                    </p>
-                </div>
-            </form>
-        </div>
-        <div class="card">
-            <form action="/add_to_cart" method="POST">
-                <img src="../static/images/Streetfighter6.jpg" class="product_pic" alt="Streetfighter6.jpg">
-                <div class="card-body">
-                    <h5 class="card-title">遊戲標題</h5>
-                    <p class="card-text">遊戲簡介: 當前遊戲簡介
-                        <br>[PS4] 暗黑破壞神4
-                    </p>
-                    <p>
-                        <input type="hidden" name="product_id" value="6">
-                        <input type="submit" name="addtoCart" value="加入購物車"><br>
-                        <a href="#" class="btn">詳細資料</a>
-                    </p>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
+</html>
+
+
+
 
 {% endblock %}
