@@ -1,4 +1,5 @@
 from flask import Flask, request, render_template, redirect, url_for, session, flash
+import re
 import sqlite3
 
 app = Flask(__name__)
@@ -157,7 +158,7 @@ def get_product_details(product_id):
     conn = sqlite3.connect('merged.db')
     cursor = conn.cursor()
     # Query the database for the product details based on product_id
-    sqlstr = "select product_id, title, price, image_url FROM products WHERE product_id='"+product_id+"'"
+    sqlstr = "select salePageId, title, price, image_url FROM products WHERE salePageId='"+product_id+"'"
     cursor.execute(sqlstr)
     product = cursor.fetchone()
     # Close the database connection
@@ -165,14 +166,9 @@ def get_product_details(product_id):
 
     if product:
         # Return the product details as a dictionary
-        return {'product_id': product[0], 'title': product[1], 'price': product[2], 'image_url': product[3]}
+        return {'salePageId': product[0], 'title': product[1], 'price': product[2], 'image_url': product[3]}
     else:
         return None
-
-
-@app.route("/test")
-def test():
-    return render_template("homepage.html")
 
 
 @app.route('/add_to_cart', methods=["POST"])
@@ -182,53 +178,94 @@ def add_to_cart():
             "點選這裡登入</b></a></h1>"
 
     product_id = request.form.get('product_id')
-    # Fetch the product details based on product_id (you can use your existing get_product_details function)
-    product_details = get_product_details(product_id)
+    user = session['user']
 
-    if product_details:
-        # Check if a cart exists in the session, and initialize an empty cart if not
-        if 'cart' not in session:
-            session['cart'] = []
+    conn = sqlite3.connect('merged.db')
+    cursor = conn.cursor()
+    cursor.execute(
+        "SELECT salePageId From cart WHERE user= ? and salePageId= ?", (user, str(product_id)))
+    in_cart = cursor.fetchone()
 
-        if product_id not in session['cart']:
-            cart_list = session['cart']
-            # product_details['product_id'] = product_id
-            cart_list.append(product_details)
-            session['cart'] = cart_list
+    if not in_cart:
+        # Fetch the product details based on product_id (you can use your existing get_product_details function)
+        product_details = get_product_details(product_id)
+
+        if product_details:
+
+            salePageId = str(product_details.get('salePageId'))
+
+            title = product_details.get('title')
+            price = product_details.get('price')
+            image_url = product_details.get('image_url')
+            sqlstr = "INSERT INTO cart('salePageId','user','title','price','image_url') values('"+salePageId+"','" + \
+                user+"','"+title+"','"+price+"','"+image_url+"')"
+            cursor.execute(sqlstr)
+            conn.commit()
+            conn.close()
+
         return redirect(url_for('homepage'))
     else:
-        return "Product not found"  # Handle the case where the product doesn't exist
+        return "<h1>商品已在您的購物車中 <br><a href = '/homepage'> <b>""回到首頁</b></a></h1>"
 
 
 @app.route('/cart')
 def cart():
-    user_cart = session.get('cart', [])
-    return render_template('cart.html', cart=user_cart)
+    if 'user' not in session:
+        return "<h1>您暫未登入， <br><a href = '/login'><b>" + \
+            "點選這裡登入</b></a></h1>"
+    user = session['user']
+    conn = sqlite3.connect('merged.db')
+    cursor = conn.cursor()
+    cursor.execute("SELECT * From cart WHERE user='"+user+"'")
+    cart_items = cursor.fetchall()
+    conn.close()
+
+    total_price = 0
+    for item in cart_items:
+        total_price += int(re.sub(r'[^\d.]', '', item[4]))
+
+    total_price = str(total_price)
+
+    return render_template('cart.html', cart_items=cart_items, total_price=total_price)
 
 
 @app.route('/remove_from_cart', methods=['POST'])
 def remove_from_cart():
+    if 'user' not in session:
+        return "<h1>您暫未登入， <br><a href = '/login'><b>" + \
+            "點選這裡登入</b></a></h1>"
+
     product_id = request.form.get('product_id')
+    user = session['user']
 
-    if 'cart' in session:
-        # Check if the 'cart' key exists in the session
-        cart = session['cart']
+    conn = sqlite3.connect('merged.db')
+    cursor = conn.cursor()
+    cursor.execute(
+        "SELECT salePageId From cart WHERE user= ? and salePageId= ?", (user, str(product_id)))
+    in_cart = cursor.fetchone()
 
-        # Iterate through the cart and remove the product with the specified product_id
-        for item in cart:
-            if item['product_id'] == product_id:
-                cart.remove(item)
-                break  # Break the loop after removing the first matching product
-
-        # Update the session with the modified cart
-        session['cart'] = cart
+    if in_cart:
+        cursor.execute(
+            "DELETE FROM cart WHERE user= ? and salePageId= ?", (user, str(product_id)))
+        conn.commit()
+        conn.close()
 
     return redirect('/cart')  # Redirect back to the cart page after removal
 
 
 @app.route('/clear_cart')
 def clear_cart():
-    session.pop('cart', None)
+    if 'user' not in session:
+        return "<h1>您暫未登入， <br><a href = '/login'><b>" + \
+            "點選這裡登入</b></a></h1>"
+    user = session['user']
+
+    conn = sqlite3.connect('merged.db')
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM cart Where user='"+user+"'")
+    conn.commit()
+    conn.close()
+
     return redirect('/cart')
 
 

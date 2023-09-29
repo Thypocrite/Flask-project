@@ -23,19 +23,19 @@
             </tr>
         </thead>
         <tbody>
-            {% if cart %}
-            {% for item in cart %}
+            {% if cart_items %}
+            {% for item in cart_items %}
             <div class="card">
                 <ul>
-                    <li><img src="{{item.image_url}}" alt="{{item.name}}"> </li>
-                    <li>{{ item.name }}</li>
-                    <li>{{ item.price }}</td>
+                    <li><img src="{{item[5]}}" alt="{{item[3]}}"> </li>
+                    <li>{{ item[3] }}</li>
+                    <li>{{ item[4] }}</td>
                     <li>
                         <!-- Add a "Remove" button with a form -->
                         <form action="/remove_from_cart" method="POST">
-                            <h1>{{ item.product_id }}</h1>
-                            <input type="hidden" name="product_id" value="{{ item.product_id }}">
-                            <button type="submit">Remove</button>
+                            <h1>{{ item[1] }}</h1>
+                            <input type="hidden" name="product_id" value="{{ item[1] }}">
+                            <input type="submit" name="remove_from_cart" value="移出購物車">
                         </form>
                     </li>
                 </ul>
