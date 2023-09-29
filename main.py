@@ -157,7 +157,7 @@ def get_product_details(product_id):
     conn = sqlite3.connect('merged.db')
     cursor = conn.cursor()
     # Query the database for the product details based on product_id
-    sqlstr = "select salePageId, title, price, image_url FROM products WHERE salePageId='"+product_id+"'"
+    sqlstr = "select product_id, title, price, image_url FROM products WHERE product_id='"+product_id+"'"
     cursor.execute(sqlstr)
     product = cursor.fetchone()
     # Close the database connection
@@ -165,9 +165,14 @@ def get_product_details(product_id):
 
     if product:
         # Return the product details as a dictionary
-        return {'name': product[1], 'price': product[2], 'image_url': product[3]}
+        return {'product_id': product[0], 'title': product[1], 'price': product[2], 'image_url': product[3]}
     else:
         return None
+
+
+@app.route("/test")
+def test():
+    return render_template("homepage.html")
 
 
 @app.route('/add_to_cart', methods=["POST"])
@@ -182,20 +187,15 @@ def add_to_cart():
 
     if product_details:
         # Check if a cart exists in the session, and initialize an empty cart if not
-        return render_template('login.html')
         if 'cart' not in session:
             session['cart'] = []
 
         if product_id not in session['cart']:
             cart_list = session['cart']
-            product_details['product_id'] = product_id
+            # product_details['product_id'] = product_id
             cart_list.append(product_details)
             session['cart'] = cart_list
-
-            total_price = sum(item['price'] for item in cart_list)
-        # product_details['product_id'] = product_id
-        # session['cart'].append(product_details)
-        return render_template('homepage.html', cart_list=cart_list, total_price=total_price)
+        return redirect(url_for('homepage'))
     else:
         return "Product not found"  # Handle the case where the product doesn't exist
 
@@ -255,16 +255,6 @@ def check_cart():
         return f'Cart Data: {cart_data}'
     else:
         return 'Cart is empty.'
-
-
-@app.route("/testing")
-def testing():
-    conn = sqlite3.connect('merged.db')
-    cursor = conn.cursor()
-    cursor.execute("SELECT * FROM products LIMIT 30")
-    products = cursor.fetchall()
-    conn.close()
-    return render_template("testing.html", products=products)
 
 
 if __name__ == "__main__":
