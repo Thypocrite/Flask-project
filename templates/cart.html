@@ -13,15 +13,9 @@
 
 
 <body>
-    <h1>Shopping Cart</h1>
+    <h1>您的購物車</h1>
 
     <table>
-        <thead>
-            <tr>
-                <th>Product</th>
-                <th>Price</th>
-            </tr>
-        </thead>
         <tbody>
             {% if cart_items %}
             {% for item in cart_items %}
@@ -33,7 +27,6 @@
                     <li>
                         <!-- Add a "Remove" button with a form -->
                         <form action="/remove_from_cart" method="POST">
-                            <h1>{{ item[1] }}</h1>
                             <input type="hidden" name="product_id" value="{{ item[1] }}">
                             <input type="submit" name="remove_from_cart" value="移出購物車">
                         </form>
@@ -43,38 +36,23 @@
             {% endfor %}
             {% else %}
             <tr>
-                <td colspan="2">Your cart is empty.</td>
-                </div>
+                <td colspan="2">目前沒有商品</td>
+
                 {% endif %}
         </tbody>
+
     </table>
-    <p>Total Price: ${{ total_price }}</p>
+    <p>總金額: ${{ total_price }}</p>
 
-    <a href="/">Continue Shopping</a>
+    <a href="/">繼續購物</a>
 
-    <form action="/purchase" method="post">
-        <input type="submit" name="purchase" value="確認購買">
+    <form action="/checkout" method="post">
+        <input type="hidden" name="total_price" value="{{ total_price }}">
+        <input type="submit" name="checkout" value="確認購買">
     </form>
-    <!-- 
-    <button onclick="confirmPurchase()">Purchase</button>
-
-    <script>
-        function confirmPurchase() {
-            // Display a confirmation dialog
-            var confirmation = confirm("Are you sure you want to make this purchase?");
-            
-            // Check the user's choice
-            if (confirmation) {
-                // User clicked "OK," so you can proceed with the purchase action.
-                alert("Purchase successful!");
-                // You can add code here to actually process the purchase.
-            } else {
-                // User clicked "Cancel" or closed the dialog, so nothing happens.
-                alert("Purchase canceled.");
-            }
-        }
-    </script> -->
-
+    <form action="clear_cart">
+        <input type="submit" name="clear_cart" value="全部移除">
+    </form>
 </body>
 
 {% endblock %}

@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}checkout{% endblock title %}
+{% block content %}
+
+<style>
+    .card {
+        width: 288px;
+        align-items: center;
+        display: -webkit-inline-flex;
+        justify-content: space-between;
+        margin: 2 auto;
+    }
+</style>
+
+
+<head>
+    <title>Checkout Success</title>
+</head>
+<body>
+    <h1>感謝您的消費!</h1>
+    <h2>購物內容</h2>
+    <p>訂單編號: {{ order_id }}</p>
+    <p>消費日期: {{ order_date }}</p>
+    <table>
+        <tr>
+            <th>Game</th>
+            <th>Price</th>
+        </tr>
+        <!-- Loop through and display order details -->
+        {% for item in cart_items %}
+        <div class="card">
+        <ul>
+            <li><img src="{{item[5]}}" alt="{{item[3]}}"> </li>
+            <li>{{ item[3] }}</li>
+            <li>{{ item[4] }}</td>
+        </div>
+        {% endfor %}
+    </table>
+    <p>Total Amount: ${{ total_price }}</p>
+    <!-- Add payment information if applicable -->
+    <a href="/">繼續購物</a>
+</body>
+
+{% endblock %}

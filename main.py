@@ -1,5 +1,6 @@
 from flask import Flask, request, render_template, redirect, url_for, session, flash
 import re
+from datetime import date
 import sqlite3
 
 app = Flask(__name__)
@@ -15,7 +16,7 @@ def index():
 def homepage():
     conn = sqlite3.connect('merged.db')
     cursor = conn.cursor()
-    cursor.execute("SELECT * FROM products LIMIT 12")
+    cursor.execute("SELECT * FROM products LIMIT 50")
     products = cursor.fetchall()
     conn.close()
     return render_template("homepage.html", products=products)
@@ -183,7 +184,7 @@ def add_to_cart():
     conn = sqlite3.connect('merged.db')
     cursor = conn.cursor()
     cursor.execute(
-        "SELECT salePageId From cart WHERE user= ? and salePageId= ?", (user, str(product_id)))
+        "SELECT salePageId From carts WHERE user= ? and salePageId= ?", (user, str(product_id)))
     in_cart = cursor.fetchone()
 
     if not in_cart:
@@ -197,7 +198,7 @@ def add_to_cart():
             title = product_details.get('title')
             price = product_details.get('price')
             image_url = product_details.get('image_url')
-            sqlstr = "INSERT INTO cart('salePageId','user','title','price','image_url') values('"+salePageId+"','" + \
+            sqlstr = "INSERT INTO carts('salePageId','user','title','price','image_url') values('"+salePageId+"','" + \
                 user+"','"+title+"','"+price+"','"+image_url+"')"
             cursor.execute(sqlstr)
             conn.commit()
@@ -216,7 +217,7 @@ def cart():
     user = session['user']
     conn = sqlite3.connect('merged.db')
     cursor = conn.cursor()
-    cursor.execute("SELECT * From cart WHERE user='"+user+"'")
+    cursor.execute("SELECT * From carts WHERE user='"+user+"'")
     cart_items = cursor.fetchall()
     conn.close()
 
@@ -241,16 +242,54 @@ def remove_from_cart():
     conn = sqlite3.connect('merged.db')
     cursor = conn.cursor()
     cursor.execute(
-        "SELECT salePageId From cart WHERE user= ? and salePageId= ?", (user, str(product_id)))
+        "SELECT salePageId From carts WHERE user= ? and salePageId= ?", (user, str(product_id)))
     in_cart = cursor.fetchone()
 
     if in_cart:
         cursor.execute(
-            "DELETE FROM cart WHERE user= ? and salePageId= ?", (user, str(product_id)))
+            "DELETE FROM carts WHERE user= ? and salePageId= ?", (user, str(product_id)))
         conn.commit()
         conn.close()
 
     return redirect('/cart')  # Redirect back to the cart page after removal
+
+
+@app.route('/checkout', methods=['POST'])
+def checkout():
+    if 'user' not in session:
+        return "<h1>您暫未登入， <br><a href = '/login'><b>" + \
+            "點選這裡登入</b></a></h1>"
+    user = session['user']
+    conn = sqlite3.connect('merged.db')
+    cursor = conn.cursor()
+    # Fetch cart items for the user from the database
+    cursor.execute("SELECT * FROM carts WHERE user='"+user+"'")
+    cart_items = cursor.fetchall()
+    if cart_items:
+        # Create a new order
+        total_price = request.form.get("total_price")
+        order_date = str(date.today())
+        cursor.execute("INSERT INTO orders(user,total_price,order_date) Values(?, ?, ?)",
+                       (user, total_price, order_date))
+        # Get the order_id of the newly created order
+        cursor.execute('SELECT last_insert_rowid()')
+        order_id = cursor.fetchone()[0]
+
+        # Transfer cart items to the user's inventory
+        for item in cart_items:
+            cursor.execute("INSERT INTO totall('salePageId','user','title','price','image_url',order_id,order_date) values(?, ?, ?, ?, ?, ?, ?)",
+                           (item[1], item[2], item[3], item[4], item[5], order_id, order_date))
+
+        # Clear the user's cart after checkout
+        cursor.execute("DELETE FROM carts WHERE user='"+user+"'")
+        conn.commit()
+        conn.close()
+
+        # Redirect to a thank you page or order summary page
+        return render_template('checkout.html', cart_items=cart_items, total_price=total_price, order_id=order_id, order_date=order_date)
+    else:
+        return "<h1>您的購物車目前沒有商品， <br><a href = '/homepage'><b>" + \
+            "前往購物</b></a></h1>"
 
 
 @app.route('/clear_cart')
@@ -262,36 +301,11 @@ def clear_cart():
 
     conn = sqlite3.connect('merged.db')
     cursor = conn.cursor()
-    cursor.execute("DELETE FROM cart Where user='"+user+"'")
+    cursor.execute("DELETE FROM carts Where user='"+user+"'")
     conn.commit()
     conn.close()
 
     return redirect('/cart')
-
-
-@app.route('/check_session')
-def check_session():
-    # Check if a specific key (e.g., 'cart') exists in the session
-    if 'cart' in session:
-        # The session is not empty, 'cart' key exists
-        return 'Session is not empty.'
-    else:
-        # The session is empty, 'cart' key does not exist
-        return 'Session is empty.'
-
-
-@app.route('/check_cart')
-def check_cart():
-    # Check if the 'cart' key exists in the session
-    if 'cart' in session:
-        # Get the cart data from the session
-        cart_data = session['cart']
-        # Print or log the cart data for inspection
-        print(cart_data)
-        # You can also return the cart data as a response to display it in the browser
-        return f'Cart Data: {cart_data}'
-    else:
-        return 'Cart is empty.'
 
 
 if __name__ == "__main__":
