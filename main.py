@@ -16,7 +16,7 @@ def index():
 def homepage():
     conn = sqlite3.connect('merged.db')
     cursor = conn.cursor()
-    cursor.execute("SELECT * FROM products LIMIT 50")
+    cursor.execute("SELECT * FROM products LIMIT 12")
     products = cursor.fetchall()
     conn.close()
     return render_template("homepage.html", products=products)
@@ -47,6 +47,8 @@ def login():
         cur = connection.cursor().execute("select * from lccnet where user='"+user+"'")
         records = cur.fetchone()
         name = records[3]
+        if records[7] == "no":
+            return render_template('administration.html')
         return render_template('membersonly.html', name=name)
     if request.method == 'POST':
         if request.form.get("reg") == "REGISTER":
@@ -156,6 +158,63 @@ def purchasehistory():
         return render_template('purchasehistory.html', rows=rows, orders=orders)
     else:
         return render_template('login.html')
+
+
+@app.route('/administrationuser', methods=['POST', 'GET'])
+def administrationuser():
+    connection = sqlite3.connect('merged.db')
+    cur = connection.cursor().execute("select * from lccnet")
+    rows = cur.fetchall()
+    return render_template('administrationuser.html', rows=rows)
+    # if request.method == 'POST':
+    #     revise = request.form['revise']
+    #     print(revise)
+
+
+@app.route('/order', methods=['POST', 'GET'])
+def order():
+    if request.method == 'POST':
+        ordernu = request.form['ordernu']
+        print(ordernu)
+        connection = sqlite3.connect('merged.db')
+        cur = connection.cursor().execute(
+            "select * from totall where order_id='"+ordernu+"'")
+        rows = cur.fetchall()
+        return render_template('order.html', rows=rows)
+    else:
+        connection = sqlite3.connect('merged.db')
+        cur = connection.cursor().execute("select * from totall")
+        rows = cur.fetchall()
+        connection.commit()
+        return render_template('order.html', rows=rows)
+
+
+@app.route('/administrator', methods=['POST', 'GET'])
+def administrator():
+    if request.method == 'POST':
+        user = request.form['user']
+        passwd = request.form['passwd']
+        name = request.form['name']
+        phonenumber = request.form['phonenumber']
+        birthday = request.form['birthday']
+        address = request.form['address']
+        password2 = "no"
+        conn = sqlite3.connect('merged.db')
+        cursor = conn.cursor().execute("INSERT INTO lccnet('user','passwd','name','phonenumber','birthday','address','password2') values('" +
+                                       user+"','"+passwd+"','"+name+"','"+phonenumber+"','"+birthday+"','"+address+"','"+password2+"')")
+        conn.commit()
+
+        sqlstr = "select user from lccnet where user='"+user+"'"
+        cursor.execute(sqlstr)
+        data = cursor.fetchone()
+        if data == None:
+            reg_massage = "溫馨提示:註冊失敗"
+            return render_template('administrator.html', message=reg_massage)
+        else:
+            login_massage = "溫馨提示:帳號已註冊 請進行登入確認"
+            return render_template('administrator.html', message=login_massage)
+    else:
+        return render_template('administrator.html')
 
 
 def get_product_details(product_id):
