@@ -147,11 +147,15 @@ def purchasehistory():
         user = session['user']
         connection = sqlite3.connect('merged.db')
         cur = connection.cursor().execute(
-            "select listmenu,liatprice from totall where user='"+user+"'")
+            "select * from totall where user='"+user+"'")
         rows = cur.fetchall()
-        return render_template('purchasehistory.html', rows=rows)
+
+        cur = connection.cursor().execute(
+            "select * from orders where user='"+user+"'")
+        orders = cur.fetchall()
+        return render_template('purchasehistory.html', rows=rows, orders=orders)
     else:
-        return render_template('purchasehistory.html')
+        return render_template('login.html')
 
 
 def get_product_details(product_id):
