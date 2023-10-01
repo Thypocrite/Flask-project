@@ -1,196 +1,40 @@
-<!DOCTYPE html>
-<html lang="zh-TW">
+{% extends "base2.html" %}
+{% block title %}{% endblock title %}
+{% block content %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Game TIME 購買紀錄</title>
+<style>
+    
+    .pur{
+		position: absolute;
+        top: calc(30% - 100px);
+        left: calc(45% - 200px);
+        height: 700px;
+        width: 800px;
+        background-color: #D3D3D3;
+        color: #191970;
+        border-radius: 30px;
+        padding: 20px;
+        font-size: 25px;
+	}
+    
+</style>
 
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-
-        }
-
-        .body {
-            position: absolute;
-            top: -250px;
-            left: -20px;
-            right: -60px;
-            bottom: -20px;
-            width: auto;
-            height: auto;
-            background-image: url(https://i.pinimg.com/originals/9e/4b/26/9e4b2654e4d8f15df834dee849cba722.jpg);
-            background-size: cover;
-            -webkit-filter: blur(5px);
-            z-index: 0;
-        }
-
-        .grad {
-            position: absolute;
-            top: -20px;
-            left: -20px;
-            right: -40px;
-            bottom: -40px;
-            width: auto;
-            height: auto;
-            background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(0, 0, 0, 0)), color-stop(100%, rgba(0, 0, 0, 0.65)));
-            /* Chrome,Safari4+ */
-            z-index: 1;
-            opacity: 0.7;
-        }
-
-        .header {
-            color: white;
-            height: 200px;
-            position: absolute;
-            top: calc(48% - 40px);
-            left: calc(50% - 255px);
-            z-index: 5;
-        }
-
-        .header h1 {
-            position: absolute;
-            left: -315px;
-            top: -250px;
-            line-height: 40px;
-            color: white;
-            font-size: 53px;
-            padding: 20px;
-        }
-
-        .content ul {
-            position: absolute;
-            right: -800px;
-            top: -240px;
-            line-height: 80px;
-            font-size: 17px;
-        }
-
-        .content li {
-            display: inline;
-            color: white;
-            margin-right: 20px;
-        }
-
-        .content a {
-            color: white;
-            text-decoration: none;
-        }
-
-        .content a:hover {
-            text-decoration: underline;
-        }
-
-        .content div {
-            float: left;
-            color: #fff;
-            font-family: 'Exo', sans-serif;
-            font-size: 35px;
-            font-weight: 200;
-        }
-
-        .content div span {
-            color: #FFEB58 !important;
-        }
-
-        .menu {
-            position: absolute;
-            top: calc(1% - 150px);
-            left: calc(80% - 300px);
-            height: 400px;
-            width: 200px;
-            font-size: 30px;
-
-        }
-
-        .menu ul {
-            text-align: left;
-            list-style: none;
-
-        }
-
-        .menu a {
-            color: white;
-            text-decoration: none;
-        }
-
-        .menu a:hover {
-            text-decoration: underline;
-        }
-
-        .purchasehistory {
-            position: absolute;
-            top: calc(10% - 170px);
-            left: calc(80% - 20px);
-            height: 400px;
-            width: 700px;
-            padding: 10px;
-            color: white;
-            background-color: #4D3544a3;
-            border-radius: 30px;
-            font-size: 20px;
-            z-index: 9;
-        }
-
-
-        ::-webkit-input-placeholder {
-            color: rgba(255, 255, 255, 0.6);
-        }
-
-        ::-moz-input-placeholder {
-            color: rgba(255, 255, 255, 0.6);
-        }
-    </style>
-</head>
-
-<body>
-    <div class="body"></div>
-    <div class="grad"></div>
-    <div class="header">
-        <header>
-            <h1>Game TIME 購買紀錄</h1>
-        </header>
-        <nav>
-            <div class="content">
-                <ul>
-                    <li><a href="#">回到首頁</a></li>
-                    <li><a href="#">最新消息</a></li>
-                    <li><a href="#">關於我們</a></li>
-                    <li><a href="#">購物車</a></li>
-                </ul>
-        </nav>
-        <menu>
-            <div class="menu">
-                <ul>
-                    <li><a href="/membersonly/data">會員資料</a></li>
-                    <li><a href="#">購物車</a></li>
-                    <li><a href="/purchasehistory">購買紀錄</a></li>
-                    <li><a href="/changePassword">重設密碼</a></li>
-                </ul>
-        </menu>
-        <main>
-            <div class="purchasehistory">
-                <h3>購買紀錄</h3>
-                <form action="/purchasehistory">
-                    <table border=1>
-                        <thead>
-                            <td>已購買品項</td>
-                            <td>NT$</td>
-                        </thead>
-                        {% for row in rows %}
-                        <tr>
-                            <td>{{row[3]}}</td>
-                            <td>{{row[4]}}</td>
-
-                        </tr>
-                        {% endfor %}
-
-        </main>
-
-        </form>
-    </div>
-</body>
-
-</html>
+<main>
+    <div class="pur">
+        <h3>購買紀錄</h3>
+        <form action = "/purchasehistory">
+            <table border = 1>
+                <thead>
+                   <td>已購買品項</td>
+                   <td>NT$</td>
+                </thead>
+                {% for row in rows %}
+                    <tr>
+                        <td>{{row[3]}}</td>
+                        <td>{{row[4]}}</td>
+               
+                    </tr>
+                {% endfor %}
+            
+    </main>
+{% endblock %}

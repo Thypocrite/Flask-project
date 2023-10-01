@@ -1,168 +1,55 @@
-<!DOCTYPE html>
-<html lang="zh-TW">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Game TIME 登入</title>
+{% extends "base.html" %}
+{% block title %}登入{% endblock title %}
+{% block content %}
 
 <style>
-    body{
-        margin: 0;
-        padding: 0;
-    
-    }
-
-    .body{
-        position: absolute;
-        top: -250px;
-        left: -20px;
-        right: -60px;
-        bottom: -20px;
-        width: auto;
-        height: auto;
-        background-image: url(https://i.pinimg.com/originals/9e/4b/26/9e4b2654e4d8f15df834dee849cba722.jpg);
-        background-size: cover;
-        -webkit-filter: blur(5px);
-        z-index: 0;
-    }
-    
-    .grad{
-        position: absolute;
-        top: -20px;
-        left: -20px;
-        right: -40px;
-        bottom: -40px;
-        width: auto;
-        height: auto;
-        background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(0,0,0,0)), color-stop(100%,rgba(0,0,0,0.65))); /* Chrome,Safari4+ */
-        z-index: 1;
-        opacity: 0.7;
-    }
-    
-    .header{
-        color: white;
-        height: 200px;
-        position: absolute;
-        top: calc(48% - 40px);
-        left: calc(50% - 255px);
-        z-index: 5;
-    }
-    .header h1 {
-        position:absolute;
-        left: -315px;
-        top: -250px;
-        line-height: 40px;
-        color: white
-        font-size: 53px;
-        padding: 20px;
-    }
-
-    .content ul {
-        position:absolute;
-        right: -800px;
-        top:-240px;
-        line-height: 80px;
-        font-size: 17px;
-    }
-
-    .content li {
-        display:inline;
-        color: white;
-        margin-right: 20px;
-    }
-    .content a{
-        color: white;
-        text-decoration:none;
-    }
-    .content a:hover {
-        text-decoration:underline;
-    }
-    .content div{
-        float: left;
-        color: #fff;
-        font-family: 'Exo', sans-serif;
-        font-size: 35px;
-        font-weight: 200;
-    }
-    
-    .content div span{
-        color: #FFEB58 !important;
-    }
-    
     .login{
         position: absolute;
-        top: calc(25% - 58px);
-        left: calc(50% - 0px);
-        height: 100px;
-        width: 200px;
-        padding: 10px;
-        z-index: 9;
+        top: calc(60% - 200px);
+        left: calc(50% - 200px);
+        height: 400px;
+        width: 700px;
+        background-color: #D3D3D3;
+        padding: 80px;
+        
     }
-    
     .login input[type=email]{
         width: 500px;
-        height: 30px;
-        background: transparent;
+        height: 40px;
+        background-color: #2F4F4F;
         border: 1px solid rgba(255,255,255,0.6);
         border-radius: 2px;
-        color: #fff;
+        color: #FFFFFF;
         font-family: 'Exo', sans-serif;
-        font-size: 20px;
+        font-size: 30px;
         font-weight: 400;
         padding: 4px;
     }
     
     .login input[type=password]{
         width: 500px;
-        height: 30px;
-        background: transparent;
+        height: 40px;
+        background-color: #2F4F4F;
         border: 1px solid rgba(255,255,255,0.6);
         border-radius: 2px;
-        color: #F7F9FC;
-        font-family: 'Exo', sans-serif;
-        font-size: 20px;
+        font-size: 30px;
         font-weight: 400;
         padding: 4px;
         margin-top: 10px;
     }
-    
-    .login input[type=text]{
-        width: 250px;
-        height: 30px;
-        background: transparent;
-        border: 1px solid rgba(255,255,255,0.6);
-        border-radius: 2px;
-        color: #a18d6c;
-        font-family: 'Exo', sans-serif;
-        font-size: 20px;
-        font-weight: 400;
-        padding: 4px;
-        margin-top: 10px;
-    }
-    
     .login input[type=submit]{
-        width: 90px;
-        height: 35px;
-        background: #fff;
+        width: 200px;
+        height: 40px;
+        background: #978989;
         border: 1px solid #fff;
         cursor: pointer;
         border-radius: 2px;
-        color: #a18d6c;
-        font-family: 'Exo', sans-serif;
-        font-size: 15px;
+        color: #FFFFFF;
+        font-size: 25px;
         font-weight: 400;
         padding: 6px;
         margin-top: 10px;
     }
-    
-    .login input[type=button]:hover{
-        opacity: 0.8;
-    }
-    
-    .login input[type=button]:active{
-        opacity: 0.6;
-    }
-    
     .login input[type=text]:focus{
         outline: none;
         border: 1px solid rgba(255,255,255,0.9);
@@ -172,57 +59,25 @@
         outline: none;
         border: 1px solid rgba(255,255,255,0.9);
     }
-    
-    .login input[type=button]:focus{
-        outline: none;
-    }
-    .flashes ul{
-        width: 300px;
-        height: 35px;
-    }
-    .flashes li{
-        width: 300px;
-        height: 35px;
-    }
-    
-    ::-webkit-input-placeholder{
-       color: rgba(255,255,255,0.6);
-    }
-    
-    ::-moz-input-placeholder{
-       color: rgba(255,255,255,0.6);
-    }        
-</style>   
-</head>
 
-<body>
-    <div class="body"></div>
-        <div class="grad"></div>
-        <div class="header">
-            <header>
-            <h1>Game TIME 登入</h1>
-            </header>
-        <nav>
-        <div class="content">
-            <ul>
-                <li><a href="/homepage">回到首頁</a></li>
-                <li><a href="#">最新消息</a></li>
-                <li><a href="#">關於我們</a></li>
-                <li><a href="">購物車</a></li>
+    .flashes {
+        font-size: 27px;
+
+    }
+</style>
+
+
+<main>
+    <div class="login">
+        <h2>登入</h2>
+    <form action = "/login" method ="post">
+            <input type ="email" placeholder ="username" name = "user"><br>
+            <input type ="password" placeholder ="password" name = "passwd"><br>
+            <input type="submit" name="login" value="SIGN IN">
+            <input type="submit" name="reg" value="REGISTER">
+            <ul class=flashes>
+                <li>{{ message }}</li>   
             </ul>
-        </nav>        
-        <main>
-	    <div class="login">
-		<form action = "/login" method ="post">
-				<input type ="email" placeholder ="username" name = "user"><br>
-				<input type ="password" placeholder ="password" name = "passwd"><br>
-				<input type="submit" name="login" value="SIGN IN">
-				<input type="submit" name="reg" value="REGISTER">
-                <ul class=flashes>
-                    <li>{{ message }}</li>   
-                </ul>
-        </main>	
-		</form>
-	</div>
-</body>
-</html> 
+    </main>		
+
+{% endblock %}

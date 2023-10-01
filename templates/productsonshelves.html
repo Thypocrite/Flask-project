@@ -1,0 +1,43 @@
+{% extends "base3.html" %}
+{% block title %}{% endblock title %}
+{% block content %}
+
+<style>
+    .adm{
+        position: absolute;
+        top: calc(30% - 100px);
+        left: calc(45% - 200px);
+        height: 800px;
+        width: 1000px;
+        background-color: #D3D3D3;
+        color: #191970;
+        border-radius: 30px;
+        padding: 60px;
+        font-size: 30px;
+    }
+    .adm input[type=submit]{
+        width: 200px;
+        height: 50px;
+        background: #978989;
+        border: 1px solid #fff;
+        cursor: pointer;
+        border-radius: 2px;
+        color: #FFFFFF;
+        font-size: 25px;
+        padding: 4px;
+        margin-top: 10px;
+        border-radius: 30px;
+    }
+</style>
+
+<main>
+	<div class="adm">
+		<form action = "/productsonshelves" method ="post">
+			<input type="submit" name="productsonshelves" value="商品更新">
+			<p>此鍵將自動更新商品,成功後將有提示訊息顯示"成功"</p>
+			<ul class=flashes>
+				<li>{{ message }}</li>   
+			</ul>
+			
+</main>
+{% endblock %}

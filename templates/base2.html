@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>會員專區</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+
+    <style>
+        .menu ul{
+            position: absolute;
+            top: calc(30% - 100px);
+            left: calc(30% - 300px);
+            height: 300px;
+            width: 160px;
+            background-color: #008080;
+            border-radius: 30px;
+            padding: 10px;
+            font-size: 27px;
+            
+        }
+        .menu li{
+            text-align:center;
+        }
+        .menu a{
+            color: white;
+            text-decoration:none;   
+        }
+        .menu a:hover{
+            text-decoration:underline;
+        }
+        .memb{
+            position: absolute;
+            top: calc(30% - 100px);
+            left: calc(45% - 200px);
+            height: 400px;
+            width: 600px;
+            background-color: #D3D3D3;
+            color: #FA8072;
+            border-radius: 30px;
+            padding: 10px;
+            font-size: 30px;
+        }
+        .pur{
+            position: absolute;
+            top: calc(30% - 100px);
+            left: calc(45% - 200px);
+            height: 700px;
+            width: 800px;
+            background-color: #D3D3D3;
+            color: #191970;
+            border-radius: 30px;
+            padding: 20px;
+            font-size: 25px;
+        }
+
+    </style>
+
+</head>
+
+<body>
+    <nav class="navbar has-shadow is-link">
+        <!-- logo -->
+        <div class="navbar-brand">
+            <a href="/" class="navbar-item">
+                <img src="https://logo.com/image-cdn/images/kts928pd/production/6a1f3266ef394695b351e49e942d53a2dced613c-407x393.png?w=640&q=72"
+                    alt="site logo" style="max-height: 70px">
+            </a>
+            <a class="navbar-burger" id="burger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </a>
+        </div>
+
+        <div class="navbar-menu" id="nav-links">
+            <div class="navbar-end">
+                <a class="navbar-item" href="/login">我的帳戶</a>
+                <a href="/cart" class="navbar-item">購物車</a>
+                <a href="/logout" class="navbar-item">登出</a>
+                <!-- <a href="/cart" class="navbar-item">購物車 ({{session['cart']|length}})</a> -->
+            </div>
+        </div>
+    
+    </nav>
+    <menu>    
+        <div class="menu">
+        <ul>
+            <li><a href="/membersonly/data">會員資料</a></li>
+            <li><a href="/cart">購物車</a></li>
+            <li><a href="/purchasehistory">購買紀錄</a></li>
+            <li><a href="/changePassword">重設密碼</a></li>
+        </ul>
+        </menu>
+    <!-- main -->
+    {% block content %}{% endblock %}
+
+
+
+
+
+
+
+    <script src="../static/js/hidebar.js"></script>
+    {% block script %}{% endblock %}
+</body>
+
+</html>

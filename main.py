@@ -1,5 +1,6 @@
 from flask import Flask, request, render_template, redirect, url_for, session, flash
 import re
+from bs4 import BeautifulSoup
 from datetime import date
 import sqlite3
 
@@ -71,10 +72,13 @@ def login():
                 cur = connection.cursor().execute("select * from lccnet where user='"+user+"'")
                 records = cur.fetchone()
                 name = records[3]
+                if records[7] == "no":
+                    return render_template('administration.html')
                 return render_template('membersonly.html', name=name)
             else:
                 login_massage = "溫馨提示:密碼不正確,請確認"
                 return render_template('login.html', message=login_massage)
+
     else:
         return render_template('login.html')
 
@@ -151,7 +155,7 @@ def purchasehistory():
         cur = connection.cursor().execute(
             "select * from totall where user='"+user+"'")
         rows = cur.fetchall()
-
+        # 取得訂單標號
         cur = connection.cursor().execute(
             "select * from orders where user='"+user+"'")
         orders = cur.fetchall()
@@ -162,20 +166,25 @@ def purchasehistory():
 
 @app.route('/administrationuser', methods=['POST', 'GET'])
 def administrationuser():
-    connection = sqlite3.connect('merged.db')
-    cur = connection.cursor().execute("select * from lccnet")
-    rows = cur.fetchall()
-    return render_template('administrationuser.html', rows=rows)
-    # if request.method == 'POST':
-    #     revise = request.form['revise']
-    #     print(revise)
+    if request.form.get("memberrevise") == "memberrevise":
+        return redirect(url_for("memberrevise"))
+    if request.method == 'POST':
+        member = request.form['member']
+        connection = sqlite3.connect('merged.db')
+        cur = connection.cursor().execute("select * from lccnet where user='"+member+"'")
+        rows = cur.fetchall()
+        return render_template('administrationuser.html', rows=rows)
+    else:
+        connection = sqlite3.connect('merged.db')
+        cur = connection.cursor().execute("select * from lccnet")
+        rows = cur.fetchall()
+        return render_template('administrationuser.html', rows=rows)
 
 
 @app.route('/order', methods=['POST', 'GET'])
 def order():
     if request.method == 'POST':
         ordernu = request.form['ordernu']
-        print(ordernu)
         connection = sqlite3.connect('merged.db')
         cur = connection.cursor().execute(
             "select * from totall where order_id='"+ordernu+"'")

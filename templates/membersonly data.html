@@ -1,132 +1,9 @@
-<!DOCTYPE html>
-<html lang="zh-TW">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Game TIME 會員資料</title>
+{% extends "base2.html" %}
+{% block title %}{% endblock title %}
+{% block content %}
 
 <style>
-    body{
-        margin: 0;
-        padding: 0;
     
-    }
-
-    .body{
-        position: absolute;
-        top: -250px;
-        left: -20px;
-        right: -60px;
-        bottom: -20px;
-        width: auto;
-        height: auto;
-        background-image: url(https://i.pinimg.com/originals/9e/4b/26/9e4b2654e4d8f15df834dee849cba722.jpg);
-        background-size: cover;
-        -webkit-filter: blur(5px);
-        z-index: 0;
-    }
-    
-    .grad{
-        position: absolute;
-        top: -20px;
-        left: -20px;
-        right: -40px;
-        bottom: -40px;
-        width: auto;
-        height: auto;
-        background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(0,0,0,0)), color-stop(100%,rgba(0,0,0,0.65))); /* Chrome,Safari4+ */
-        z-index: 1;
-        opacity: 0.7;
-    }
-    
-    .header{
-        color: white;
-        height: 200px;
-        position: absolute;
-        top: calc(48% - 40px);
-        left: calc(50% - 255px);
-        z-index: 5;
-    }
-    .header h1 {
-        position:absolute;
-        left: -315px;
-        top: -250px;
-        line-height: 80px;
-        color: white
-    }
-
-    .header ul {
-        position:absolute;
-        right: -800px;
-        top:-240px;
-        line-height: 80px;
-        font-size: 17px;
-       
-    }
-
-    .header li{
-        display:inline;
-        color: white;
-        margin-right: 20px;
-        
-    }
-    .header a{
-        color: white;
-        text-decoration:none;
-    }
-    .header a:hover {
-        text-decoration:underline;
-    }
-    .header div{
-        float: left;
-        color: #fff;
-        font-family: 'Exo', sans-serif;
-        font-size: 35px;
-        font-weight: 200px;
-    }
-    
-    .header div span{
-        color: #FFEB58 !important;
-    }
-    .menur{
-        position: absolute;
-        top: calc(1% - 150px);
-        left: calc(80% - 300px);
-        height: 400px;
-        width: 200px;
-        font-size: 20px;
-        margin-bottom: 30px;
-        
-    }
-    .menur li{
-        text-align:center;
-        
-    }
-    .menur a{
-        color: white;
-        text-decoration:none;   
-    }
-    .menur a:hover{
-        text-decoration:underline;
-    }
-    .memb{
-        position: absolute;
-        top: calc(50% - 200px);
-        left: calc(50% - 250px);
-        height: 350px;
-        width: 500px;
-        color: white;
-        background-color: #4D3544a3;
-        border-radius: 30px;
-        font-size: 30px;
-        
-    }
-    
-    .memb li{
-        font-size: 25px;
-        list-style-type:circle;
-        margin-bottom: 10px;
-    }
     .hot{
         position: absolute;
         top: calc(60% - 42px);
@@ -149,56 +26,20 @@
         font-size: 25px;
     }
     
-    ::-webkit-input-placeholder{
-       color: rgba(255,255,255,0.6);
-    }
-    
-    ::-moz-input-placeholder{
-       color: rgba(255,255,255,0.6);
-    }        
-</style>   
-</head>
+</style>
 
-<body>
-    <div class="body"></div>
-        <div class="grad"></div>
-        <div class="header">
-            <header>
-            <h1>Game TIME 會員資料</h1>
-            <nav>
+<main>
+    <div class="memb">
+        <p>歡迎 {{name}} !</p>
             <ul>
-                <li><a href="/homepage">回到首頁</a></li>
-                <li><a href="#">最新消息</a></li>
-                <li><a href="#">關於我們</a></li>
-                <li><a href='/logout'>登出</a></li>
-
+                <li>電子郵件 : {{email}}</li>
+                <li>手機號碼 : {{phonenumber}}</li>
+                <li>生日 : {{birthday}}</li>
+                <li>地址 : {{address}}</li>
             </ul>
-            </nav>
-            </header>
-    <menu>    
-        <div class="menur">
-        <ol>
-            <li><a href="/membersonly/data">會員資料</a></li>
-            <li><a href="#">購物車</a></li>
-            <li><a href="/purchasehistory">購買紀錄</a></li>
-            <li><a href="/changePassword">重設密碼</a></li>
-        </ol> 
-    </menu>           
-    </div>
-    <main>
-	        <div class="memb">
-                <p>歡迎 {{name}} !</p>
-                    <ul>
-                        <li>電子郵件 : {{email}}</li>
-		                <li>手機號碼 : {{phonenumber}}</li>
-                        <li>生日 : {{birthday}}</li>
-                        <li>地址 : {{address}}</li>
-                    </ul>
-        <div class="hot">
-            <P>熱門推薦</P>
-    <div class="Eventdiscounts">
-            <p>活動折扣</p>
-    </main>
-
-</body>
-</html> 
+<div class="hot">
+    <P>熱門推薦</P>
+<div class="Eventdiscounts">
+    <p>活動折扣</p>
+</main>
+{% endblock %}
