@@ -9,29 +9,69 @@
         justify-content: space-between;
         margin: 2 auto;
     }
+
+    .title {
+        padding: 20px;
+    }
+
+    .Inner-container {
+        display: flex;
+        flex-direction: row;
+        /* Horizontal layout */
+        background-color: rgb(243, 237, 237);
+        border-radius: 12px;
+    }
+
+    .left {
+        flex: 2;
+        /* Takes up 2/3 of the available space */
+        padding: 10px;
+    }
+
+    .right {
+        flex: 1;
+        /* Takes up 1/3 of the available space */
+        padding: 10px;
+    }
+
+    .line {
+        border-top: 1px solid #ccc;
+        /* Horizontal line style */
+        /* Remove margin for line (optional) */
+    }
 </style>
 
-
-<body>
-    <h1>您的購物車</h1>
-
-    <table>
-        <tbody>
+<div class="container">
+    <h1 class="title is-3">您的購物車</h1>
+    <div class="Inner-container">
+        <div class="left">
             {% if cart_items %}
             {% for item in cart_items %}
-            <div class="card">
-                <ul>
-                    <li><img src="{{item[5]}}" alt="{{item[3]}}"> </li>
-                    <li>{{ item[3] }}</li>
-                    <li>{{ item[4] }}</td>
-                    <li>
-                        <!-- Add a "Remove" button with a form -->
+
+            <div class="box">
+                <article class="media">
+                    <div class="media-left">
+                        <figure class="image is-96x96">
+                            <img src="{{item[5]}}" alt="{{item[3]}}">
+                        </figure>
+                    </div>
+                    <div class="media-content">
+                        <div class="content">
+                            <p>
+                                <strong>{{ item[3] }}</strong> <small>新增於</small> <small>31m</small>
+                            </p>
+                        </div>
+                        <nav class="level is-mobile">
+                            <div class="level-left">
+                                {{item[4]}}
+                            </div>
+                        </nav>
                         <form action="/remove_from_cart" method="POST">
-                            <input type="hidden" name="product_id" value="{{ item[1] }}">
+                            <input type="hidden" name="product_id" value="{{item[1]}}">
                             <input type="submit" name="remove_from_cart" value="移出購物車">
                         </form>
-                    </li>
-                </ul>
+                    </div>
+                </article>
             </div>
             {% endfor %}
             {% else %}
@@ -39,21 +79,81 @@
                 <td colspan="2">目前沒有商品</td>
 
                 {% endif %}
-        </tbody>
 
-    </table>
-    <p>總金額: ${{ total_price }}</p>
+        </div>
+        <div class="right">
+            <form class="box">
+                <div class="field">
+                    <div class="subtitle is-4">小計明細</div>
+                    <!-- Main container -->
+                    <nav class="level">
+                        <!-- Left side -->
+                        <div class="level-left">
+                            <div class="level-item">
+                                <p class="subtitle is-6">
+                                    <strong>商品金額</strong>
+                                </p>
+                            </div>
+                        </div>
+                        <!-- Right side -->
+                        <div class="level-right">
+                            <p class="subtitle is-6">
+                                <strong>{{ total_price }}</strong>
+                            </p>
+                        </div>
+                    </nav>
+                    <hr class="line">
+                    <nav class="level">
+                        <!-- Left side -->
+                        <div class="level-left">
+                            <div class="level-item">
+                                <p class="subtitle is-6">
+                                    <strong>小計</strong>
+                                </p>
+                            </div>
+                        </div>
+                        <!-- Right side -->
+                        <div class="level-right">
+                            <p class="subtitle is-6">
+                                <strong>{{ total_price }}</strong>
+                            </p>
+                        </div>
+                    </nav>
+                    <nav class="level">
+                        <div class="level-left">
+                            <div class="level-item"></div>
+                        </div>
+                        <div class="level-right">
+                            <form action="/checkout" method="post">
+                                <input type="hidden" name="total_price" value="{{ total_price }}">
+                                <input type="submit" class="button is-primary" name="checkout" value="確認購買">
+                            </form>
+                        </div>
+                    </nav>
+                </div>
+            </form>
 
-    <a href="/">繼續購物</a>
+            <form class="box">
+                <div class="field">
+                    <nav class="level">
+                        <!-- Left side -->
+                        <div class="level-left">
+                            <form action="clear_cart">
+                                <input type="submit" class="button is-danger" name="clear_cart" value="全部移除">
+                            </form>
+                        </div>
+                        <!-- Right side -->
+                        <div class="level-left">
+                            <button class="button"><a href="/">繼續購物</a></button>
+                        </div>
+                    </nav>
+                </div>
+            </form>
+        </div>
+    </div>
 
-    <form action="/checkout" method="post">
-        <input type="hidden" name="total_price" value="{{ total_price }}">
-        <input type="submit" name="checkout" value="確認購買">
-    </form>
-    <form action="clear_cart">
-        <input type="submit" name="clear_cart" value="全部移除">
-    </form>
-</body>
+</div>
+
 
 
 {% endblock %}
