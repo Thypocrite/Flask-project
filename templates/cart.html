@@ -47,7 +47,6 @@
         <div class="left">
             {% if cart_items %}
             {% for item in cart_items %}
-
             <div class="box">
                 <article class="media">
                     <div class="media-left">
@@ -75,14 +74,11 @@
             </div>
             {% endfor %}
             {% else %}
-            <tr>
-                <td colspan="2">目前沒有商品</td>
-
-                {% endif %}
-
+            <h1 class="subtitle is-4">目前沒有商品</h1>
+            {% endif %}
         </div>
         <div class="right">
-            <form class="box">
+            <div class="box">
                 <div class="field">
                     <div class="subtitle is-4">小計明細</div>
                     <!-- Main container -->
@@ -119,21 +115,21 @@
                             </p>
                         </div>
                     </nav>
-                    <nav class="level">
-                        <div class="level-left">
+                    
+                    <div class="level-left">
                             <div class="level-item"></div>
-                        </div>
-                        <div class="level-right">
-                            <form action="/checkout" method="post">
-                                <input type="hidden" name="total_price" value="{{ total_price }}">
-                                <input type="submit" class="button is-primary" name="checkout" value="確認購買">
-                            </form>
-                        </div>
-                    </nav>
+                    </div>
+                    <div class="level-right">
+                        <form action="/checkout" method="post">
+                            <input type="hidden" name="total_price" value="{{ total_price }}">
+                            <input type="submit" class="button is-primary" name="checkout" value="確認購買">
+                        </form>
+                    </div>
+                  
                 </div>
-            </form>
+            </div>
 
-            <form class="box">
+            <div class="box">
                 <div class="field">
                     <nav class="level">
                         <!-- Left side -->
@@ -144,16 +140,14 @@
                         </div>
                         <!-- Right side -->
                         <div class="level-left">
-                            <button class="button"><a href="/">繼續購物</a></button>
+                            <a href="/" class="button">繼續購物</a>
                         </div>
                     </nav>
                 </div>
-            </form>
+            </div>
         </div>
     </div>
-
 </div>
-
 
 
 {% endblock %}

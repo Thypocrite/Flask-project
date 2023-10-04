@@ -3,45 +3,45 @@
 {% block content %}
 
 <head>
-    <title>Home Page</title>
-    <style>
-        /* Add CSS styling as needed */
+  <title>Home Page</title>
+  <style>
+    /* Add CSS styling as needed */
 
 
-        .product {
-            width: 20%;
-            /* Set the width of each product to fit four in a row */
-            margin: 1%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            display: inline-block;
-            vertical-align: top;
-        }
-    </style>
+    .product {
+      width: 20%;
+      /* Set the width of each product to fit four in a row */
+      margin: 1%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      display: inline-block;
+      vertical-align: top;
+    }
+  </style>
 </head>
 
 <body>
-    <div class="container">
-        <div class="product-list">
-            {% for product in products %}
-            <div class="product">
-                <form action="add_to_cart" method="post">
-                    <img src="{{ product[3] }}" alt="{{ product[3] }}">
-                    <h3>{{ product[1] }}</h3>
-                    <p>Price: ${{ product[2] }}</p>
-                    <!-- Add other product details and formatting as needed -->
-                    <input type="hidden" name="product_id" value="{{ product[0] }}">
-                    <input type="submit" name="add_to_cart" value="加入購物車"><br>
-                </form>
-            </div>
-            {% if loop.index % 4 == 0 %}
-            <div style="clear: both;"></div> <!-- Clear the float every four products -->
+  <div class="container">
+    <div class="product-list">
+      {% for product in products %}
+      <div class="product">
+        <form action="add_to_cart" method="post">
+          <img src="{{ product[3] }}" alt="{{ product[3] }}">
+          <h3>{{ product[1] }}</h3>
+          <p>Price: ${{ product[2] }}</p>
+          <!-- Add other product details and formatting as needed -->
+          <input type="hidden" name="product_id" value="{{ product[0] }}">
+          <input type="submit" name="add_to_cart" value="加入購物車"><br>
+        </form>
+      </div>
+      {% if loop.index % 4 == 0 %}
+      <div style="clear: both;"></div> <!-- Clear the float every four products -->
 
-            {% endif %}
+      {% endif %}
 
-            {% endfor %}
-        </div>
+      {% endfor %}
     </div>
+  </div>
 </body>
 
 
