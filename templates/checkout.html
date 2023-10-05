@@ -25,33 +25,37 @@
 <body>
     <div class="container">
 
-        <h1 class="title is-3">感謝您的消費!</h1>
+        <h1 class="title is-3">感謝您的消費!</h1><br>
         <h2 class="subtitle is-4">購物內容:</h2>
         <p class="subtitle is-4">訂單編號: {{ order_id }}</p>
         <p class="subtitle is-4">消費日期: {{ order_date }}</p>
         <div class="Inner-container">
-            <!-- Loop through and display order details -->
-            {% for item in cart_items %}
-            <article class="media">
-                <div class="media-left">
-                    <figure class="image is-96x96">
-                        <img src="{{item[5]}}" alt="{{item[3]}}">
-                    </figure>
-                </div>
-                <div class="media-content">
-                    <div class="content">
-                        <p>
-                            <strong>{{ item[3] }}</strong>
-                        </p>
-                    </div>
-                    <nav class="level is-mobile">
-                        <div class="level-left">
-                            {{item[4]}}
+            <div class="content">
+                <!-- Loop through and display order details -->
+                {% for item in cart_items %}
+                <div class="box">
+                    <article class="media">
+                        <div class="media-left">
+                            <figure class="image is-96x96">
+                                <img src="{{item[5]}}" alt="{{item[3]}}">
+                            </figure>
                         </div>
-                    </nav>
+                        <div class="media-content">
+                            <div class="content">
+                                <p>
+                                    <strong>{{ item[3] }}</strong>
+                                </p>
+                            </div>
+                            <nav class="level is-mobile">
+                                <div class="level-left">
+                                    {{item[4]}}
+                                </div>
+                            </nav>
+                        </div>
+                    </article>
                 </div>
-            </article>
-            {% endfor %}
+                {% endfor %}
+            </div>
         </div>
         <nav class="level">
             <div class="level-left">

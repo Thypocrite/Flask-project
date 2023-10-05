@@ -26,6 +26,13 @@ def homepage():
     return render_template("homepage.html", products=products)
 
 
+@app.route('/salePage', methods=["GET", "POST"])
+def salePage():
+    product_id = request.form.get("product_id")
+    products = get_product_details(product_id)
+    return render_template("salePage.html", products=products)
+
+
 @app.route('/membersonly/data')
 def membersonly():
     if 'user' in session:
