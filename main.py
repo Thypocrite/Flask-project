@@ -26,6 +26,17 @@ def homepage():
     return render_template("homepage.html", products=products)
 
 
+@app.route('/category/<category_name>', methods=["GET", "POST"])
+def category(category_name):
+    conn = sqlite3.connect('merged.db')
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM products WHERE title LIKE'" +
+                   category_name+"'  ")
+    products = cursor.fetchall()
+    conn.close()
+    return render_template("category.html", products=products)
+
+
 @app.route('/salePage/<int:product_id>', methods=["GET", "POST"])
 def salePage(product_id):
     single_product = get_product_details(str(product_id))

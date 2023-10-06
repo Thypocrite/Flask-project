@@ -21,6 +21,16 @@
 </head>
 
 <body>
+  <form action="/category" method="POST">
+    <label for="category">Select a Category:</label>
+    <select id="category" name="category_name">
+      <option value="PS5"> PS5 </option>
+      <option value="中古"> 中古 </option>
+      <!-- Add more category options as needed -->
+    </select>
+    <button type="submit">Go</button>
+  </form>
+
   <div class="container">
     <div class="product-list">
       {% for product in products %}
