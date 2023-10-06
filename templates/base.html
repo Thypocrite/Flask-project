@@ -7,9 +7,29 @@
     <title>{% block title %}{% endblock %}</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
 
-
-
 </head>
+
+<style>
+    /* Add CSS styling as needed */
+    .card {
+        width: 288px;
+        align-items: center;
+        display: -webkit-inline-flex;
+        justify-content: space-between;
+        margin: 2 auto;
+    }
+
+    .product {
+      width: 20%;
+      /* Set the width of each product to fit four in a row */
+      margin: 1%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      display: inline-block;
+      vertical-align: top;
+    }
+    
+  </style>
 
 <body>
     <nav class="navbar has-shadow is-link">
@@ -19,11 +39,14 @@
                 <img src="https://logo.com/image-cdn/images/kts928pd/production/6a1f3266ef394695b351e49e942d53a2dced613c-407x393.png?w=640&q=72"
                     alt="site logo" style="max-height: 70px">
             </a>
-            <a class="navbar-burger" id="burger">
-                <span></span>
-                <span></span>
-                <span></span>
-            </a>
+        </div>
+        <div class="navbar-item has-dropdown is-hoverable">
+            <a class="navbar-link">商品分類</a>
+            <div class="navbar-dropdown">
+              <a class="navbar-item" href="/category/PS5">PS5</a>
+              <a class="navbar-item" href="/category/中古">中古專區</a>
+            </div>
+          </div>
         </div>
 
         <div class="navbar-menu" id="nav-links">
@@ -36,12 +59,6 @@
     </nav>
     <!-- main -->
     {% block content %}{% endblock %}
-
-
-
-
-
-
 
     <script src="../static/js/hidebar.js"></script>
     {% block script %}{% endblock %}

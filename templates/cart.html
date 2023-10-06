@@ -25,19 +25,22 @@
     .left {
         flex: 2;
         /* Takes up 2/3 of the available space */
-        padding: 10px;
+        padding: 20px;
     }
 
     .right {
         flex: 1;
         /* Takes up 1/3 of the available space */
-        padding: 10px;
+        padding: 20px;
+    }
+
+    .box {
+        padding: auto;
+        margin: 0;
     }
 
     .line {
         border-top: 1px solid #ccc;
-        /* Horizontal line style */
-        /* Remove margin for line (optional) */
     }
 </style>
 
@@ -115,9 +118,9 @@
                             </p>
                         </div>
                     </nav>
-                    
+
                     <div class="level-left">
-                            <div class="level-item"></div>
+                        <div class="level-item"></div>
                     </div>
                     <div class="level-right">
                         <form action="/checkout" method="post">
@@ -125,7 +128,7 @@
                             <input type="submit" class="button is-primary" name="checkout" value="確認購買">
                         </form>
                     </div>
-                  
+
                 </div>
             </div>
 

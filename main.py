@@ -18,11 +18,8 @@ def index():
 
 @app.route('/homepage')
 def homepage():
-    conn = sqlite3.connect('merged.db')
-    cursor = conn.cursor()
-    cursor.execute("SELECT * FROM products LIMIT 12")
-    products = cursor.fetchall()
-    conn.close()
+    products = [(6529468, '【PS5】胡鬧廚房！全都好吃 (原譯：煮過頭 吃到飽)《中文版》', 'NT$880', '//diz36nn4q02zr.cloudfront.net/webapi/imagesV3/Cropped/SalePage/6529468/0/637973753679270000?v=1'), (6529560, '【PS5】惡魔靈魂 重製版《中文版》', 'NT$1,590', '//diz36nn4q02zr.cloudfront.net/webapi/imagesV3/Cropped/SalePage/6529560/0/638229724827600000?v=1'), (6529581, '【PS5】跑車浪漫旅 7 (GT7)《中文版》', 'NT$1,990', '//diz36nn4q02zr.cloudfront.net/webapi/imagesV3/Cropped/SalePage/6529581/0/638222480068400000?v=1'), (6529660, '【PS5】鬼線：東京 GhostWire:Tokyo《中文版》', 'NT$1,790', '//diz36nn4q02zr.cloudfront.net/webapi/imagesV3/Cropped/SalePage/6529660/0/638282413571300000?v=1'), (6542048, '【PS5】死亡回歸 Returnal《中文版》', 'NT$1,590', '//diz36nn4q02zr.cloudfront.net/webapi/imagesV3/Cropped/SalePage/6542048/0/638282366902300000?v=1'), (6542178, '【PS5】小小大冒險《中文版》', 'NT$1,790', '//diz36nn4q02zr.cloudfront.net/webapi/imagesV3/Cropped/SalePage/6542178/0/638260616442070000?v=1'),
+                (6571086, '【PS5】惡魔獵人 5 特別版《中文版》', 'NT$1,190', '//diz36nn4q02zr.cloudfront.net/webapi/imagesV3/Cropped/SalePage/6571086/0/637903759896270000?v=1'), (6600410, '【PS5】魔法氣泡™ 特趣思™ 俄羅斯方塊™ 2《中文版》', 'NT$1,290', '//diz36nn4q02zr.cloudfront.net/webapi/imagesV3/Cropped/SalePage/6600410/0/638258139715200000?v=1'), (6615536, '【PS5】漫威蜘蛛人：邁爾斯摩拉斯 終極版《中文版》', 'NT$1,990', '//diz36nn4q02zr.cloudfront.net/webapi/imagesV3/Cropped/SalePage/6615536/0/638291232246100000?v=1'), (6637292, '【PS5】真人快打 11 終極版《簡體中文版》', 'NT$699', '//diz36nn4q02zr.cloudfront.net/webapi/imagesV3/Cropped/SalePage/6637292/0/638223481859970000?v=1'), (6755107, '【PS5】仁王 收藏輯《中文版》', 'NT$1,590', '//diz36nn4q02zr.cloudfront.net/webapi/imagesV3/Cropped/SalePage/6755107/0/638273600726770000?v=1'), (6773543, '【PS5】人中之龍 7 光與闇的去向 國際版《中文版》', 'NT$1,490', '//diz36nn4q02zr.cloudfront.net/webapi/imagesV3/Cropped/SalePage/6773543/0/638260616775730000?v=1')]
     return render_template("homepage.html", products=products)
 
 
@@ -30,11 +27,12 @@ def homepage():
 def category(category_name):
     conn = sqlite3.connect('merged.db')
     cursor = conn.cursor()
-    cursor.execute("SELECT * FROM products WHERE title LIKE'" +
-                   category_name+"'  ")
+    cursor.execute(
+        "SELECT * FROM products WHERE title LIKE ?", ('%' + category_name + '%',))
     products = cursor.fetchall()
+    row_count = len(products)
     conn.close()
-    return render_template("category.html", products=products)
+    return render_template("category.html", products=products, row_count=row_count)
 
 
 @app.route('/salePage/<int:product_id>', methods=["GET", "POST"])
