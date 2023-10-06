@@ -26,11 +26,10 @@ def homepage():
     return render_template("homepage.html", products=products)
 
 
-@app.route('/salePage', methods=["GET", "POST"])
-def salePage():
-    product_id = request.form.get("product_id")
-    products = get_product_details(product_id)
-    return render_template("salePage.html", products=products)
+@app.route('/salePage/<int:product_id>', methods=["GET", "POST"])
+def salePage(product_id):
+    single_product = get_product_details(str(product_id))
+    return render_template("salePage.html", single_product=single_product)
 
 
 @app.route('/membersonly/data')
@@ -241,15 +240,14 @@ def get_product_details(product_id):
     conn = sqlite3.connect('merged.db')
     cursor = conn.cursor()
     # Query the database for the product details based on product_id
-    sqlstr = "select salePageId, title, price, image_url FROM products WHERE salePageId='"+product_id+"'"
+    sqlstr = "select * FROM products WHERE salePageId='"+product_id+"'"
     cursor.execute(sqlstr)
     product = cursor.fetchone()
     # Close the database connection
     conn.close()
 
     if product:
-        # Return the product details as a dictionary
-        return {'salePageId': product[0], 'title': product[1], 'price': product[2], 'image_url': product[3]}
+        return product
     else:
         return None
 
@@ -262,7 +260,6 @@ def add_to_cart():
 
     product_id = request.form.get('product_id')
     user = session['user']
-
     conn = sqlite3.connect('merged.db')
     cursor = conn.cursor()
     cursor.execute(
@@ -275,11 +272,10 @@ def add_to_cart():
 
         if product_details:
 
-            salePageId = str(product_details.get('salePageId'))
-
-            title = product_details.get('title')
-            price = product_details.get('price')
-            image_url = product_details.get('image_url')
+            salePageId = str(product_details[0])
+            title = product_details[1]
+            price = product_details[2]
+            image_url = product_details[3]
             sqlstr = "INSERT INTO carts('salePageId','user','title','price','image_url') values('"+salePageId+"','" + \
                 user+"','"+title+"','"+price+"','"+image_url+"')"
             cursor.execute(sqlstr)
