@@ -11,7 +11,7 @@
         <form action="../add_to_cart" method="POST">
           <img src="{{ product[3] }}" alt="{{ product[1] }}">
           <h3>{{ product[1] }}</h3>
-          <p>Price: ${{ product[2] }}</p>
+          <p>NT${{ product[2] }}</p>
           <!-- Add other product details and formatting as needed -->
           <input type="hidden" name="product_id" value="{{ product[0] }}">
           <input type="hidden" name="page_url" value="/category/{{category_name}}">
