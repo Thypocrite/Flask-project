@@ -8,18 +8,16 @@
     <div class="product-list">
       {% for product in products %}
       <div class="product">
-        <form action="add_to_cart" method="post">
+        <form action="../add_to_cart" method="POST">
           <img src="{{ product[3] }}" alt="{{ product[1] }}">
           <h3>{{ product[1] }}</h3>
           <p>Price: ${{ product[2] }}</p>
           <!-- Add other product details and formatting as needed -->
           <input type="hidden" name="product_id" value="{{ product[0] }}">
+          <input type="hidden" name="page_url" value="/category/{{category_name}}">
           <input type="submit" name="add_to_cart" value="加入購物車"><br>
         </form>
-        <form action="salePage/{{ product[0] }}" method="post">
-          <input type="hidden" name="product_id" value="{{ product[0] }}">
-          <input type="submit" name="product_id" value="商品詳情"><br>
-        </form>
+        <a href="../salePage/{{ product[0] }}" class="button">商品詳情</a>
       </div>
       {% if loop.index % 4 == 0 %}
       <div style="clear: both;"></div> <!-- Clear the float every four products -->

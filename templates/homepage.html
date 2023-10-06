@@ -13,12 +13,11 @@
           <p>Price: ${{ product[2] }}</p>
           <!-- Add other product details and formatting as needed -->
           <input type="hidden" name="product_id" value="{{ product[0] }}">
-          <input type="submit" name="add_to_cart" value="加入購物車"><br>
+          <input type="hidden" name="page_url" value="/homepage">
+          <button type="submit" class="button">加入購物車</button>
         </form>
-        <form action="salePage/{{ product[0] }}" method="post">
-          <input type="hidden" name="product_id" value="{{ product[0] }}">
-          <input type="submit" name="product_id" value="商品詳情"><br>
-        </form>
+        <a href="salePage/{{ product[0] }}" class="button">商品詳情</a>
+
       </div>
       {% if loop.index % 4 == 0 %}
       <div style="clear: both;"></div> <!-- Clear the float every four products -->
@@ -29,7 +28,5 @@
     </div>
   </div>
 </body>
-
-
 
 {% endblock %}

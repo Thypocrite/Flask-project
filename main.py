@@ -32,7 +32,7 @@ def category(category_name):
     products = cursor.fetchall()
     row_count = len(products)
     conn.close()
-    return render_template("category.html", products=products, row_count=row_count)
+    return render_template("category.html", products=products, row_count=row_count, category_name=category_name)
 
 
 @app.route('/salePage/<int:product_id>', methods=["GET", "POST"])
@@ -268,6 +268,7 @@ def add_to_cart():
             "點選這裡登入</b></a></h1>"
 
     product_id = request.form.get('product_id')
+    page_url = request.form.get('page_url')
     user = session['user']
     conn = sqlite3.connect('merged.db')
     cursor = conn.cursor()
@@ -291,7 +292,7 @@ def add_to_cart():
             conn.commit()
             conn.close()
 
-        return redirect(url_for('homepage'))
+        return redirect(page_url)
     else:
         return "<h1>商品已在您的購物車中 <br><a href = '/homepage'> <b>""回到首頁</b></a></h1>"
 

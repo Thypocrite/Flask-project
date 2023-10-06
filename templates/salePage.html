@@ -9,8 +9,16 @@
             <li>{{ single_product[1] }}</li>
             <li>NT$ {{ single_product[2] }}</li>
             <li>商品編號 {{ single_product[0] }}</li>
+            <p id="current-url"></p>
+
+            <form action="/add_to_cart" method="POST">
+                <input type="hidden" name="product_id" value="{{ single_product[0] }}">
+                <input type="hidden" name="page_url" value="/salePage/{{single_product[0]}}">
+                <input type="submit" name="add_to_cart" value="加入購物車"><br>
+            </form>
             <li>商品說明 {{ single_product[6] }}</li>
         </ul>
+
     </div>
 </body>
 
