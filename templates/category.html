@@ -2,6 +2,18 @@
 {% block title %}category{% endblock %}
 {% block content %}
 
+<style>
+  .product {
+    width: 20%;
+    /* Set the width of each product to fit four in a row */
+    margin: 1%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    display: inline-block;
+    vertical-align: top;
+  }
+</style>
+
 <body>
   <div class="container">
     <p>共 {{ row_count }}項商品</p>

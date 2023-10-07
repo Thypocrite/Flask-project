@@ -292,6 +292,7 @@ def add_to_cart():
             conn.commit()
             conn.close()
 
+        flash('Product added to the cart successfully!', 'success')
         return redirect(page_url)
     else:
         return "<h1>商品已在您的購物車中 <br><a href = '/homepage'> <b>""回到首頁</b></a></h1>"
