@@ -68,9 +68,9 @@
                                 {{item[4]}}
                             </div>
                         </nav>
-                        <form action="/remove_from_cart" method="POST">
+                        <form action="/remove_from_cart" class="remove-form" method="POST">
                             <input type="hidden" name="product_id" value="{{item[1]}}">
-                            <input type="submit" name="remove_from_cart" value="移出購物車">
+                            <button type="button" class="button is-warning" onclick="confirmRemove(this)">移出購物車</button>
                         </form>
                     </div>
                 </article>
@@ -123,9 +123,10 @@
                         <div class="level-item"></div>
                     </div>
                     <div class="level-right">
-                        <form action="/checkout" method="post">
+                        <form action="/checkout" class="checkout-form" method="POST">
                             <input type="hidden" name="total_price" value="{{ total_price }}">
-                            <input type="submit" class="button is-primary" name="checkout" value="確認購買">
+                            <button type="button" class="button is-primary"
+                                onclick="confirmCheckOut(this)">確認購買</button>
                         </form>
                     </div>
 
@@ -136,8 +137,9 @@
                 <div class="field">
                     <nav class="level">
                         <div class="level-left">
-                            <form action="clear_cart">
-                                <input type="submit" class="button is-danger" name="clear_cart" value="全部移除">
+                            <form action="clear_cart" class="clear-form">
+                                <button type="button" class="button is-danger"
+                                    onclick="confirmClearCart(this)">全部移除</button>
                             </form>
                         </div>
                         <div class="level-right">
@@ -150,5 +152,7 @@
     </div>
 </div>
 
-
+<script src="../static/js/confirmRemove.js"></script>
+<script src="../static/js/confirmClearCart.js"></script>
+<script src="../static/js/confirmCheckOut.js"></script>
 {% endblock %}

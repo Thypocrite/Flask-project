@@ -335,8 +335,8 @@ def cart():
 @app.route('/remove_from_cart', methods=['POST'])
 def remove_from_cart():
     if 'user' not in session:
-        return "<h1>您暫未登入， <br><a href = '/login'><b>" + \
-            "點選這裡登入</b></a></h1>"
+        flash(f'請先登入您的帳戶!', 'error')
+        return redirect(request.referrer)
 
     product_id = request.form.get('product_id')
     user = session['user']
@@ -344,7 +344,7 @@ def remove_from_cart():
     conn = sqlite3.connect('merged.db')
     cursor = conn.cursor()
     cursor.execute(
-        "SELECT salePageId From carts WHERE user= ? and salePageId= ?", (user, str(product_id)))
+        "SELECT title From carts WHERE user= ? and salePageId= ?", (user, str(product_id)))
     in_cart = cursor.fetchone()
 
     if in_cart:
@@ -352,15 +352,18 @@ def remove_from_cart():
             "DELETE FROM carts WHERE user= ? and salePageId= ?", (user, str(product_id)))
         conn.commit()
         conn.close()
-
+    # Extract the text between two single quotes from tuple "in_cart"
+    title = in_cart[0].strip("'")
+    flash(f'商品{title}已移出購物車!', 'error')
     return redirect('/cart')  # Redirect back to the cart page after removal
 
 
 @app.route('/checkout', methods=['POST'])
 def checkout():
     if 'user' not in session:
-        return "<h1>您暫未登入， <br><a href = '/homepage'><b>" + \
-            "前往購物</b></a></h1>"
+        flash(f'請先登入您的帳戶!', 'error')
+        return redirect(request.referrer)
+
     user = session['user']
     conn = sqlite3.connect('merged.db')
     cursor = conn.cursor()
@@ -388,25 +391,27 @@ def checkout():
         conn.close()
 
         # Redirect to a thank you page or order summary page
+        flash(f'感謝您的消費!', 'success')
         return render_template('checkout.html', cart_items=cart_items, total_price=total_price, order_id=order_id, order_date=order_date)
     else:
-        return "<h1>您的購物車目前沒有商品， <br><a href = '/homepage'><b>" + \
-            "前往購物</b></a></h1>"
+        flash(f'您的購物車目前沒有商品!', 'error')
+        return redirect(request.referrer)
 
 
 @app.route('/clear_cart')
 def clear_cart():
     if 'user' not in session:
-        return "<h1>您暫未登入， <br><a href = '/login'><b>" + \
-            "點選這裡登入</b></a></h1>"
-    user = session['user']
+        flash(f'請先登入您的帳戶!', 'error')
+        return redirect(request.referrer)
 
+    user = session['user']
     conn = sqlite3.connect('merged.db')
     cursor = conn.cursor()
     cursor.execute("DELETE FROM carts Where user='"+user+"'")
     conn.commit()
     conn.close()
 
+    flash(f'已清空您的購物車!', 'success')
     return redirect('/cart')
 
 
