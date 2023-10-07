@@ -2,23 +2,63 @@
 {% block title %}salepage{% endblock %}
 {% block content %}
 
+<style>
+    .Inner-container {
+        display: flex;
+        flex-direction: row;
+        /* Horizontal layout */
+        background-color: rgb(243, 237, 237);
+        border-radius: 12px;
+        padding: 20px;
+    }
+
+    .left {
+        flex: 1;
+        /* Takes up 1/2 of the available space */
+        padding: 20px;
+    }
+
+    .right {
+        flex: 1;
+        /* Takes up 1/2 of the available space */
+        padding: 20px;
+    }
+
+    .line {
+        border-top: 1px solid #ccc;
+    }
+</style>
+
 <body>
     <div class="container">
-        <ul>
-            <img src="{{ single_product[3] }}" alt="{{ single_product[1]}}">
-            <li>{{ single_product[1] }}</li>
-            <li>NT$ {{ single_product[2] }}</li>
-            <li>商品編號 {{ single_product[0] }}</li>
-            <p id="current-url"></p>
+        <hr>
+        <div class="Inner-container">
+            <div class="left">
+                <img src="{{ single_product[3] }}" alt="{{ single_product[1]}}">
+            </div>
+            <div class="right">
+                <ul>
+                    <li class="subtitle is-5">{{ single_product[1] }}</li>
+                    <li class="subtitle is-5">商品金額: {{ single_product[2] }}</li>
+                    <nav class="level">
+                        <div class="level-left">
+                            <li class="subtitle is-5">商品編號: {{ single_product[0] }}</li>
+                        </div>
+                        <div class="level-right">
+                            <form action="/add_to_cart" method="POST">
+                                <input type="hidden" name="product_id" value="{{ single_product[0] }}">
+                                <input type="submit" class="button is-link" name="add_to_cart" value="加入購物車"><br>
+                            </form>
+                        </div>
+                    </nav>
 
-            <form action="/add_to_cart" method="POST">
-                <input type="hidden" name="product_id" value="{{ single_product[0] }}">
-                <input type="hidden" name="page_url" value="/salePage/{{single_product[0]}}">
-                <input type="submit" name="add_to_cart" value="加入購物車"><br>
-            </form>
-            <li>商品說明 {{ single_product[6] }}</li>
-        </ul>
+                    <hr class="line">
+                    <li class="subtitle is-5">{{ description_head }}</li>
+                    <li>{{ description_body }}</li>
 
+                </ul>
+            </div>
+        </div>
     </div>
 </body>
 

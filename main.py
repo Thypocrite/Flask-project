@@ -46,8 +46,10 @@ def category(category_name):
 @app.route('/salePage/<int:product_id>', methods=["GET", "POST"])
 def salePage(product_id):
     single_product = get_product_details(str(product_id))
+    description_head = single_product[6].split()[0]
+    description_body = " ".join(single_product[6].split()[1:])
     if single_product:
-        return render_template("salePage.html", single_product=single_product)
+        return render_template("salePage.html", single_product=single_product, description_head=description_head, description_body=description_body)
     else:
         return render_template("PageNotFound.html"), 404
 
@@ -279,7 +281,6 @@ def add_to_cart():
         return redirect(request.referrer)
 
     product_id = request.form.get('product_id')
-    page_url = request.form.get('page_url')
     user = session['user']
     conn = sqlite3.connect('merged.db')
     cursor = conn.cursor()
@@ -307,7 +308,7 @@ def add_to_cart():
     else:
         flash(f'商品已在您的購物車中!', 'error')
 
-    return redirect(page_url)
+    return redirect(request.referrer)
 
 
 @app.route('/cart')
