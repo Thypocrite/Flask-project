@@ -12,16 +12,25 @@
 <style>
     /* CSS for flash messages */
     .flash-messages {
-        list-style: none;
-        padding: 10px;
+        font-size: 24px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
     }
 
     .success {
+        background-color: rgba(0, 255, 0, 0.2);
+        /* Transparent green background */
         color: green;
+        padding: 10px;
+        border-radius: 6px;
     }
 
     .error {
+        background-color: rgba(255, 0, 0, 0.2);
+        /* Transparent red background */
         color: red;
+        padding: 10px;
+        border-radius: 6px;
     }
 
     .info {
@@ -59,16 +68,7 @@
             </div>
         </div>
     </nav>
-    <!-- Display flash messages if they exist -->
-    {% with messages = get_flashed_messages(with_categories=true) %}
-    {% if messages %}
-    <ul class="flash-messages">
-        {% for category, message in messages %}
-        <li class="{{ category }}">{{ message }}</li>
-        {% endfor %}
-    </ul>
-    {% endif %}
-    {% endwith %}
+
     <!-- main -->
     {% block content %}{% endblock %}
 

@@ -292,10 +292,11 @@ def add_to_cart():
             conn.commit()
             conn.close()
 
-        flash('Product added to the cart successfully!', 'success')
-        return redirect(page_url)
+        flash(f'商品{title}已成功加入購物車!', 'success')
     else:
-        return "<h1>商品已在您的購物車中 <br><a href = '/homepage'> <b>""回到首頁</b></a></h1>"
+        flash(f'商品已在您的購物車中!', 'error')
+
+    return redirect(page_url)
 
 
 @app.route('/cart')
