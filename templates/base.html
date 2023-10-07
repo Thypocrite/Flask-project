@@ -13,6 +13,7 @@
     /* CSS for flash messages */
     .flash-messages {
         font-size: 24px;
+        text-align: center;
         border: 1px solid #ccc;
         border-radius: 6px;
     }
@@ -54,8 +55,8 @@
         <div class="navbar-item has-dropdown is-hoverable">
             <a class="navbar-link">商品分類</a>
             <div class="navbar-dropdown">
-                <a class="navbar-item" href="/category/PS5">PS5</a>
-                <a class="navbar-item" href="/category/中古">中古專區</a>
+                <a class="navbar-item subtitle is-4" href="/category/PS5"><strong>PS5</strong></a>
+                <a class="navbar-item subtitle is-5" href="/category/中古"><strong>中古專區</strong></a>
             </div>
         </div>
         </div>
@@ -64,11 +65,24 @@
             <div class="navbar-end">
                 <a class="navbar-item" href="/login">我的帳戶</a>
                 <a href="/cart" class="navbar-item">購物車</a>
-                <!-- <a href="/cart" class="navbar-item">購物車 ({{session['cart']|length}})</a> -->
+                {% if 'user' in session %}
+                <!-- Display the "Logout" block if the 'user_id' session variable exists -->
+                <a class="navbar-item" href="/logout">登出</a>
+                {% endif %}
             </div>
         </div>
     </nav>
 
+    <!-- Display flash messages if they exist -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <ul class="flash-messages">
+        {% for category, message in messages %}
+        <li class="{{ category }}">{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
     <!-- main -->
     {% block content %}{% endblock %}
 

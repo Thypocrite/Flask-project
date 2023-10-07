@@ -4,15 +4,6 @@
 
 <body>
     <div class="container">
-        {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-        <ul class="flash-messages">
-            {% for category, message in messages %}
-            <li class="{{ category }}">{{ message }}</li>
-            {% endfor %}
-        </ul>
-        {% endif %}
-        {% endwith %}
         <ul>
             <img src="{{ single_product[3] }}" alt="{{ single_product[1]}}">
             <li>{{ single_product[1] }}</li>

@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}PageNotFound{% endblock %}
+{% block content %}
+
+<style>
+    .error-container {
+        display: flex;
+        flex-direction: column;
+        /* Stack content vertically */
+        align-items: center;
+        /* Center content vertically along the cross-axis */
+        padding: 120px;
+        background-color: rgb(243, 237, 237);
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .error-message {
+        font-size: 36px;
+        color: #e74c3c;
+    }
+
+    .return-button {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #3498db;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 4px;
+        margin-top: 20px;
+    }
+
+    .return-button:hover {
+        background-color: #2980b9;
+    }
+</style>
+
+
+<div class="container">
+    <hr>
+    <div class="error-container">
+        <h1 class="error-message">很抱歉，找不到此頁面</h1><br>
+        <p class="subtitle is-5">您尋找的頁面可能故障或被移除了</p>
+        <a class="return-button" href="/">回到上一頁</a>
+    </div>
+</div>
+
+
+
+
+{% endblock %}

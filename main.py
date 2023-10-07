@@ -16,6 +16,11 @@ def index():
     return redirect(url_for("homepage"))
 
 
+@app.errorhandler(404)
+def pageNotFound(error):
+    return render_template("PageNotFound.html"), 404
+
+
 @app.route('/homepage')
 def homepage():
     products = [(6529468, '【PS5】胡鬧廚房！全都好吃 (原譯：煮過頭 吃到飽)《中文版》', 'NT$880', '//diz36nn4q02zr.cloudfront.net/webapi/imagesV3/Cropped/SalePage/6529468/0/637973753679270000?v=1'), (6529560, '【PS5】惡魔靈魂 重製版《中文版》', 'NT$1,590', '//diz36nn4q02zr.cloudfront.net/webapi/imagesV3/Cropped/SalePage/6529560/0/638229724827600000?v=1'), (6529581, '【PS5】跑車浪漫旅 7 (GT7)《中文版》', 'NT$1,990', '//diz36nn4q02zr.cloudfront.net/webapi/imagesV3/Cropped/SalePage/6529581/0/638222480068400000?v=1'), (6529660, '【PS5】鬼線：東京 GhostWire:Tokyo《中文版》', 'NT$1,790', '//diz36nn4q02zr.cloudfront.net/webapi/imagesV3/Cropped/SalePage/6529660/0/638282413571300000?v=1'), (6542048, '【PS5】死亡回歸 Returnal《中文版》', 'NT$1,590', '//diz36nn4q02zr.cloudfront.net/webapi/imagesV3/Cropped/SalePage/6542048/0/638282366902300000?v=1'), (6542178, '【PS5】小小大冒險《中文版》', 'NT$1,790', '//diz36nn4q02zr.cloudfront.net/webapi/imagesV3/Cropped/SalePage/6542178/0/638260616442070000?v=1'),
@@ -32,13 +37,19 @@ def category(category_name):
     products = cursor.fetchall()
     row_count = len(products)
     conn.close()
-    return render_template("category.html", products=products, row_count=row_count, category_name=category_name)
+    if products:
+        return render_template("category.html", products=products, row_count=row_count, category_name=category_name)
+    else:
+        return render_template("PageNotFound.html"), 404
 
 
 @app.route('/salePage/<int:product_id>', methods=["GET", "POST"])
 def salePage(product_id):
     single_product = get_product_details(str(product_id))
-    return render_template("salePage.html", single_product=single_product)
+    if single_product:
+        return render_template("salePage.html", single_product=single_product)
+    else:
+        return render_template("PageNotFound.html"), 404
 
 
 @app.route('/membersonly/data')
@@ -264,8 +275,8 @@ def get_product_details(product_id):
 @app.route('/add_to_cart', methods=["POST"])
 def add_to_cart():
     if 'user' not in session:
-        return "<h1>您暫未登入， <br><a href = '/login'><b>" + \
-            "點選這裡登入</b></a></h1>"
+        flash(f'請先登入您的帳戶!', 'error')
+        return redirect(request.referrer)
 
     product_id = request.form.get('product_id')
     page_url = request.form.get('page_url')
@@ -302,8 +313,8 @@ def add_to_cart():
 @app.route('/cart')
 def cart():
     if 'user' not in session:
-        return "<h1>您暫未登入， <br><a href = '/login'><b>" + \
-            "點選這裡登入</b></a></h1>"
+        flash(f'請先登入您的帳戶!', 'error')
+        return redirect(request.referrer)
     user = session['user']
     conn = sqlite3.connect('merged.db')
     cursor = conn.cursor()
@@ -347,8 +358,8 @@ def remove_from_cart():
 @app.route('/checkout', methods=['POST'])
 def checkout():
     if 'user' not in session:
-        return "<h1>您暫未登入， <br><a href = '/login'><b>" + \
-            "點選這裡登入</b></a></h1>"
+        return "<h1>您暫未登入， <br><a href = '/homepage'><b>" + \
+            "前往購物</b></a></h1>"
     user = session['user']
     conn = sqlite3.connect('merged.db')
     cursor = conn.cursor()

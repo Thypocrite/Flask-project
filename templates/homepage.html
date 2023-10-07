@@ -16,16 +16,6 @@
 
 <body>
   <div class="container">
-    <!-- Display flash messages if they exist -->
-    {% with messages = get_flashed_messages(with_categories=true) %}
-    {% if messages %}
-    <ul class="flash-messages">
-      {% for category, message in messages %}
-      <li class="{{ category }}">{{ message }}</li>
-      {% endfor %}
-    </ul>
-    {% endif %}
-    {% endwith %}
     <div class="product-list">
       {% for product in products %}
       <div class="product">

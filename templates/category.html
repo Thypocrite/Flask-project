@@ -16,15 +16,6 @@
 
 <body>
   <div class="container">
-    {% with messages = get_flashed_messages(with_categories=true) %}
-    {% if messages %}
-    <ul class="flash-messages">
-      {% for category, message in messages %}
-      <li class="{{ category }}">{{ message }}</li>
-      {% endfor %}
-    </ul>
-    {% endif %}
-    {% endwith %}
     <p>共 {{ row_count }}項商品</p>
     <div class="product-list">
       {% for product in products %}
