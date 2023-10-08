@@ -28,6 +28,21 @@
   .product-price {
     color: red;
   }
+
+  .hover-effect {
+    /* Add your default styles here */
+    transition: transform 0.3s ease;
+    /* Smooth transition effect */
+
+    /* Add other default styles as needed */
+  }
+
+  .hover-effect:hover {
+    /* Define the styles to apply when hovering */
+    transform: scale(1.1);
+    /* Scale the image by 10% when hovered */
+    /* Add other styles for the hover effect */
+  }
 </style>
 
 <body>
@@ -38,7 +53,9 @@
     <div class="product-list">
       {% for product in products %}
       <div class="product">
-        <img src="{{ product[3] }}" alt="{{ product[1] }}">
+        <a href="../salePage/{{ product[0] }}">
+          <img src="{{ product[3] }}" alt="{{ product[1] }}" class="hover-effect">
+        </a>
         <div class="product-title">{{ product[1] }}</div>
         <div class="product-price">{{ product[2] }}</div>
         <nav class="level">
