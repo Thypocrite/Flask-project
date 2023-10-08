@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+{% block title %}search result{% endblock %}
+{% block content %}
+
+
+
+<style>
+    .card {
+        width: 288px;
+        align-items: center;
+        display: -webkit-inline-flex;
+        justify-content: space-between;
+        margin: 2 auto;
+    }
+
+    .product {
+        width: 20%;
+        /* Set the width of each product to fit four in a row */
+        margin: 1%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        display: inline-block;
+        vertical-align: top;
+    }
+
+    .product-title {
+        height: 48px;
+    }
+
+    .product-price {
+        color: red;
+    }
+
+    .hover-effect {
+        /* Add your default styles here */
+        transition: transform 0.3s ease;
+        /* Smooth transition effect */
+
+        /* Add other default styles as needed */
+    }
+
+    .hover-effect:hover {
+        /* Define the styles to apply when hovering */
+        transform: scale(1.1);
+        /* Scale the image by 10% when hovered */
+        /* Add other styles for the hover effect */
+    }
+</style>
+
+<body>
+    <div class="container">
+        <hr>
+        <p class="subtitle is-4">搜尋: {{ keyword }}</p>
+        <p class="subtitle is-4">共 {{ row_count }}項商品</p>
+        {% if products %}
+        <div class="product-list">
+            {% for product in products %}
+            <div class="product">
+                <a href="../salePage/{{ product[0] }}">
+                    <img src="{{ product[3] }}" alt="{{ product[1] }}" class="hover-effect">
+                </a>
+                <div class="product-title">{{ product[1] }}</div>
+                <div class="product-price">{{ product[2] }}</div>
+                <nav class="level">
+                    <div class="level-left">
+                        <div class="level-item">
+                            <a href="../salePage/{{ product[0] }}" class="button is-warning">商品詳情</a>
+                        </div>
+                    </div>
+                    <div class="level-right">
+
+                        <form action="../add_to_cart" method="POST">
+                            <input type="hidden" name="product_id" value="{{ product[0] }}">
+                            <input type="submit" class="button is-link" name="add_to_cart" value="加入購物車"><br>
+                        </form>
+                    </div>
+                </nav>
+
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <h1 class="subtitle is-4">找不到相關的內容</h1><br>
+        <p>請調整進階篩選的內容，或放寬條件重新搜尋</p>
+        {% endif %}
+
+    </div>
+</body>
+
+
+
+
+
+
+{% endblock content %}

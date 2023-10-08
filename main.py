@@ -54,6 +54,27 @@ def salePage(product_id):
         return render_template("PageNotFound.html"), 404
 
 
+@app.route('/search', methods=["GET"])
+def search():
+    keyword = request.args.get('keyword')
+    conn = sqlite3.connect("merged.db")
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM products WHERE title LIKE ?",
+                   ('%'+keyword+'%',))
+    products = cursor.fetchall()
+    conn.close()
+
+    if keyword == "":
+        products = None
+
+    if products:
+        row_count = len(products)
+    else:
+        row_count = 0
+
+    return render_template("search.html", products=products, row_count=row_count, keyword=keyword)
+
+
 @app.route('/membersonly/data')
 def membersonly():
     if 'user' in session:
