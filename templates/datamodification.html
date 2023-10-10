@@ -121,6 +121,7 @@
 		padding: 4px;
 		margin-top: 10px;
 	}
+
 	.admmm input[type=button] {
 		width: 500px;
 		height: 50px;
@@ -139,21 +140,28 @@
 <main>
 	<div class="adm">
 		<h3>會員資料修改-請先搜尋用戶資料,確認資料內容</h3>
+		<hr>
+		<h3>會員帳戶: {{ records[1] }}</h3>
+
 	</div>
 
 	<div class="admmm">
-		<h4>會員資料修改-請完整輸入內容</h4>
 		<form action="datam" method="POST">
 			<input type="hidden" name="user" value="{{ records[1] }}">
-			<input type="password" placeholder="{{ records[2] }}" name="passwd"><br>
-			<input type="text" placeholder="{{ records[3] }}" name="name"><br>
-			<input type="text" placeholder="{{ records[4] }}" name="pho"><br>
-			<input type="text" placeholder="{{ records[5] }}" name="bir"><br>
-			<input type="text" placeholder="{{ records[6] }}" name="addr"><br>
+			<label for="passwd">密碼</label><br>
+			<input type="password" placeholder="{{ records[2] }}" name="passwd" id="passwd"><br>
+			<label for="name">使用者名稱</label><br>
+			<input type="text" placeholder="{{ records[3] }}" name="name" id="name"><br>
+			<label for="pho">電話號碼</label><br>
+			<input type="text" placeholder="{{ records[4] }}" name="pho" id="pho"><br>
+			<label for="bir">生日</label><br>
+			<input type="text" placeholder="{{ records[5] }}" name="bir" id="bir"><br>
+			<label for="addr">住址</label><br>
+			<input type="text" placeholder="{{ records[6] }}" name="addr" id="addr"><br>
 			<input type="submit" value="Revise"><br>
 			<input type="button" onclick="history.back()" value="back">
 		</form>
-		
+
 	</div>
 	</div>
 

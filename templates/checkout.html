@@ -39,10 +39,14 @@
                     <hr class="line">
                     <p class="subtitle is-4">訂單編號: {{ order_id }}</p>
                     <p class="subtitle is-4">消費日期: {{ order_date }}</p>
+                    {% if discount!= 0 %}
+                    <p class="subtitle is-4">商品金額: {{ total_price }}</p>
+                    <p class="subtitle is-4">折扣金額: {{ discount }}</p>
+                    {% endif %}
                     <nav class="level">
                         <div class="level-left">
                             <p class="title is-3">
-                                <strong>總計: NT${{ total_price }}</strong>
+                                <strong>總計: NT${{ payment }}</strong>
                             </p>
                         </div>
                         <div class="level-right">

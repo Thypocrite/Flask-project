@@ -111,7 +111,7 @@
                         </div>
                         <div class="level-right">
                             <p class="subtitle is-6">
-                                <strong>$$$$</strong>
+                                <strong>{{discount}}</strong>
                             </p>
                         </div>
                     </nav>
@@ -126,7 +126,7 @@
                         </div>
                         <div class="level-right">
                             <p class="subtitle is-6">
-                                <strong>{{ total_price }}</strong>
+                                <strong>{{ payment }}</strong>
                             </p>
                         </div>
                     </nav>
@@ -137,6 +137,8 @@
                     <div class="level-right">
                         <form action="/checkout" class="checkout-form" method="POST">
                             <input type="hidden" name="total_price" value="{{ total_price }}">
+                            <input type="hidden" name="discount" value="{{ discount }}">
+                            <input type="hidden" name="payment" value="{{ payment }}">
                             <button type="button" class="button is-primary"
                                 onclick="confirmCheckOut(this)">確認購買</button>
                         </form>

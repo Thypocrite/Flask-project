@@ -393,9 +393,19 @@ def cart():
     for item in cart_items:
         total_price += int(re.sub(r'[^\d.]', '', item[4]))
 
-    total_price = str(total_price)
+    total_price = total_price
 
-    return render_template('cart.html', cart_items=cart_items, total_price=total_price)
+    discount = 0
+    if total_price >= 3000:
+        discount = 300
+    elif total_price >= 6000:
+        discount = 800
+    elif total_price >= 10000:
+        discount = 1500
+
+    payment = total_price-discount
+
+    return render_template('cart.html', cart_items=cart_items, total_price=total_price, discount=discount, payment=payment)
 
 
 @app.route('/remove_from_cart', methods=['POST'])  # 移除購物車中指定商品
@@ -438,10 +448,12 @@ def checkout():
     cart_items = cursor.fetchall()
     if cart_items:
         # Create a new order
-        total_price = request.form.get("total_price")
+        total_price = str(request.form.get("total_price"))
+        discount = str(request.form.get("discount"))
+        payment = str(request.form.get("payment"))
         order_date = str(date.today())
-        cursor.execute("INSERT INTO orders(user,total_price,order_date) Values(?, ?, ?)",
-                       (user, total_price, order_date))
+        cursor.execute("INSERT INTO orders(user,total_price,discount,payment,order_date) Values(?, ?, ?, ?, ?)",
+                       (user, total_price, discount, payment, order_date))
         # Get the order_id of the newly created order
         cursor.execute('SELECT last_insert_rowid()')
         order_id = cursor.fetchone()[0]
@@ -458,7 +470,7 @@ def checkout():
 
         # Redirect to a thank you page or order summary page
         flash('感謝您的消費!', 'success')
-        return render_template('checkout.html', cart_items=cart_items, total_price=total_price, order_id=order_id, order_date=order_date)
+        return render_template('checkout.html', cart_items=cart_items, total_price=total_price, discount=discount, payment=payment, order_id=order_id, order_date=order_date)
     else:
         flash('您的購物車目前沒有商品!', 'error')
         return redirect(request.referrer)
