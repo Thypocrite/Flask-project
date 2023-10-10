@@ -13,8 +13,6 @@
     vertical-align: top;
     transition: transform 0.3s ease;
   }
-
-
   .product:hover {
     /* Define the styles to apply when hovering */
     transform: scale(1.1);
@@ -24,6 +22,17 @@
 </style>
 
 <body>
+  <div class="container">
+    <img src="{{ url_for('static', filename='images/i1.jpg') }}" alt="poster" class="img-fluid">
+  </div>
+  <section class="container section-gap">
+    <div class="row">
+        <div class="col-md-12">
+            <h2 class="text-center">Welcome to Gaming Time!</h2>
+            <!-- 这里可以添加其他标题内容 -->
+        </div>
+    </div>
+  </section>
   <div class="container">
     <div class="product-list">
       {% for product in products %}
@@ -50,6 +59,39 @@
       {% endfor %}
     </div>
   </div>
+
+  <footer class="footer-area section_gap">
+    <section class="testimonial_area section_gap">
+        <div class="container">
+            <div class="testimonial_slider owl-carousel">
+                <div class="image-container">
+                    <img class="" src="{{ url_for('static', filename='images/i2.jpg') }}" alt="">
+                    
+                </div>    
+                <div class="image-container">
+                    <img class="" src="{{ url_for('static', filename='images/i3.jpg') }}" alt="">
+                    
+                </div>
+                <div class="image-container">
+                    <img class="" src="{{ url_for('static', filename='images/i4.jpg') }}" alt="">
+                    
+                </div>    
+                <div class="image-container">
+                    <img class="" src="{{ url_for('static', filename='images/i5.jpg') }}" alt="">
+                    
+                </div>
+                <div class="image-container">
+                    <img class="" src="{{ url_for('static', filename='images/i6.jpg') }}" alt="">
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="accomodation_area section_gap">
+        <div class="container">
+            <div class="section_title text-center">     
+            </div>
+        
+    </section>
 </body>
 
 {% endblock %}
