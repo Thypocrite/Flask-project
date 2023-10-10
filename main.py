@@ -11,24 +11,24 @@ app = Flask(__name__)
 app.secret_key = 'apple benanan key'
 
 
-@app.route("/")
+@app.route("/")  # 根目錄
 def index():
     return redirect(url_for("homepage"))
 
 
-@app.errorhandler(404)
+@app.errorhandler(404)  # 找不到網頁
 def pageNotFound(error):
     return render_template("PageNotFound.html"), 404
 
 
-@app.route('/homepage')
+@app.route('/homepage')  # 首頁
 def homepage():
     products = [(6529468, '【PS5】胡鬧廚房！全都好吃 (原譯：煮過頭 吃到飽)《中文版》', 'NT$880', '//diz36nn4q02zr.cloudfront.net/webapi/imagesV3/Cropped/SalePage/6529468/0/637973753679270000?v=1'), (6529560, '【PS5】惡魔靈魂 重製版《中文版》', 'NT$1,590', '//diz36nn4q02zr.cloudfront.net/webapi/imagesV3/Cropped/SalePage/6529560/0/638229724827600000?v=1'), (6529581, '【PS5】跑車浪漫旅 7 (GT7)《中文版》', 'NT$1,990', '//diz36nn4q02zr.cloudfront.net/webapi/imagesV3/Cropped/SalePage/6529581/0/638222480068400000?v=1'), (6529660, '【PS5】鬼線：東京 GhostWire:Tokyo《中文版》', 'NT$1,790', '//diz36nn4q02zr.cloudfront.net/webapi/imagesV3/Cropped/SalePage/6529660/0/638282413571300000?v=1'), (6542048, '【PS5】死亡回歸 Returnal《中文版》', 'NT$1,590', '//diz36nn4q02zr.cloudfront.net/webapi/imagesV3/Cropped/SalePage/6542048/0/638282366902300000?v=1'), (6542178, '【PS5】小小大冒險《中文版》', 'NT$1,790', '//diz36nn4q02zr.cloudfront.net/webapi/imagesV3/Cropped/SalePage/6542178/0/638260616442070000?v=1'),
                 (6571086, '【PS5】惡魔獵人 5 特別版《中文版》', 'NT$1,190', '//diz36nn4q02zr.cloudfront.net/webapi/imagesV3/Cropped/SalePage/6571086/0/637903759896270000?v=1'), (6600410, '【PS5】魔法氣泡™ 特趣思™ 俄羅斯方塊™ 2《中文版》', 'NT$1,290', '//diz36nn4q02zr.cloudfront.net/webapi/imagesV3/Cropped/SalePage/6600410/0/638258139715200000?v=1'), (6615536, '【PS5】漫威蜘蛛人：邁爾斯摩拉斯 終極版《中文版》', 'NT$1,990', '//diz36nn4q02zr.cloudfront.net/webapi/imagesV3/Cropped/SalePage/6615536/0/638291232246100000?v=1'), (6637292, '【PS5】真人快打 11 終極版《簡體中文版》', 'NT$699', '//diz36nn4q02zr.cloudfront.net/webapi/imagesV3/Cropped/SalePage/6637292/0/638223481859970000?v=1'), (6755107, '【PS5】仁王 收藏輯《中文版》', 'NT$1,590', '//diz36nn4q02zr.cloudfront.net/webapi/imagesV3/Cropped/SalePage/6755107/0/638273600726770000?v=1'), (6773543, '【PS5】人中之龍 7 光與闇的去向 國際版《中文版》', 'NT$1,490', '//diz36nn4q02zr.cloudfront.net/webapi/imagesV3/Cropped/SalePage/6773543/0/638260616775730000?v=1')]
     return render_template("homepage.html", products=products)
 
 
-@app.route('/category/<category_name>', methods=["GET", "POST"])
+@app.route('/category/<category_name>', methods=["GET", "POST"])  # 商品分類頁
 def category(category_name):
     conn = sqlite3.connect('merged.db')
     cursor = conn.cursor()
@@ -43,7 +43,7 @@ def category(category_name):
         return render_template("PageNotFound.html"), 404
 
 
-@app.route('/salePage/<int:product_id>', methods=["GET", "POST"])
+@app.route('/salePage/<int:product_id>', methods=["GET", "POST"])  # 商品單項頁
 def salePage(product_id):
     single_product = get_product_details(str(product_id))
     description_head = single_product[6].split()[0]
@@ -54,7 +54,7 @@ def salePage(product_id):
         return render_template("PageNotFound.html"), 404
 
 
-@app.route('/search', methods=["GET"])
+@app.route('/search', methods=["GET"])  # 查詢功能
 def search():
     keyword = request.args.get('keyword')
     conn = sqlite3.connect("merged.db")
@@ -75,7 +75,7 @@ def search():
     return render_template("search.html", products=products, row_count=row_count, keyword=keyword)
 
 
-@app.route('/membersonly/data')
+@app.route('/membersonly/data')  # 會員-會員資料
 def membersonly():
     if 'user' in session:
         user = session['user']
@@ -92,7 +92,7 @@ def membersonly():
         "點選這裡登入</b></a>"
 
 
-@app.route('/login', methods=['POST', 'GET'])
+@app.route('/login', methods=['POST', 'GET'])  # 會員-登入
 def login():
     if 'user' in session:
         user = session['user']
@@ -135,13 +135,13 @@ def login():
         return render_template('login.html')
 
 
-@app.route("/logout")
+@app.route("/logout")  # 會員-登出
 def logout():
     session.pop("user", None)
     return render_template("login.html")
 
 
-@app.route('/reg', methods=['POST', 'GET'])
+@app.route('/reg', methods=['POST', 'GET'])  # 會員-註冊
 def reg():
     if request.method == 'POST':
         user = request.form['user']
@@ -168,7 +168,7 @@ def reg():
         return render_template('reg.html')
 
 
-@app.route('/changePassword', methods=['POST', 'GET'])
+@app.route('/changePassword', methods=['POST', 'GET'])  # 會員-重設密碼
 def changePassword():
     if 'user' in session:
         user = session['user']
@@ -199,7 +199,7 @@ def changePassword():
         return render_template('changePassword.html')
 
 
-@app.route('/purchasehistory')
+@app.route('/purchasehistory')  # 會員-購買紀錄
 def purchasehistory():
     if 'user' in session:
         user = session['user']
@@ -207,33 +207,62 @@ def purchasehistory():
         cur = connection.cursor().execute(
             "select * from totall where user='"+user+"'")
         rows = cur.fetchall()
-        # 取得訂單標號
-        cur = connection.cursor().execute(
-            "select * from orders where user='"+user+"'")
-        orders = cur.fetchall()
-        return render_template('purchasehistory.html', rows=rows, orders=orders)
+
+        return render_template('purchasehistory.html', rows=rows)
     else:
         return render_template('login.html')
 
 
-@app.route('/administrationuser', methods=['POST', 'GET'])
+@app.route('/administrationuser', methods=['POST', 'GET'])  # 管理區-會員資料
 def administrationuser():
-    if request.form.get("memberrevise") == "memberrevise":
-        return redirect(url_for("memberrevise"))
-    if request.method == 'POST':
-        member = request.form['member']
-        connection = sqlite3.connect('merged.db')
-        cur = connection.cursor().execute("select * from lccnet where user='"+member+"'")
-        rows = cur.fetchall()
-        return render_template('administrationuser.html', rows=rows)
-    else:
-        connection = sqlite3.connect('merged.db')
-        cur = connection.cursor().execute("select * from lccnet")
-        rows = cur.fetchall()
-        return render_template('administrationuser.html', rows=rows)
+    connection = sqlite3.connect('merged.db')
+    cur = connection.cursor().execute("select * from lccnet")
+    rows = cur.fetchall()
+    return render_template('administrationuser.html', rows=rows)
 
 
-@app.route('/order', methods=['POST', 'GET'])
+@app.route('/datam', methods=['POST'])  # 管理區-會員資料修改
+def datam():
+    user = request.form.get("user")
+    passwd = request.form['passwd']
+    name = request.form['name']
+    pho = request.form['pho']
+    bir = request.form['bir']
+    addr = request.form['addr']
+    connection = sqlite3.connect('merged.db')
+    cursor = connection.cursor()
+
+    sql_query = """
+    UPDATE lccnet SET
+        passwd = CASE WHEN ? <> '' THEN ? ELSE passwd END,
+        name = CASE WHEN ? <> '' THEN ? ELSE name END,
+        phonenumber = CASE WHEN ? <> '' THEN ? ELSE phonenumber END,
+        birthday = CASE WHEN ? <> '' THEN ? ELSE birthday END,
+        address = CASE WHEN ? <> '' THEN ? ELSE address END
+
+    WHERE user= ?"""
+    cursor.execute(sql_query, (passwd, passwd, name,
+                   name, pho, pho, bir, bir, addr, addr, user))
+
+    cursor = connection.cursor().execute("select * from lccnet")
+    rows = cursor.fetchall()
+    connection.commit()
+    connection.close()
+    return render_template('administrationuser.html', rows=rows)
+
+
+@app.route('/dataSearch', methods=['POST', 'GET'])  # 管理區-會員資料修改-搜尋
+def dataSearch():
+    member = request.form.get("member")
+    connection = sqlite3.connect('merged.db')
+    cur = connection.cursor().execute(
+        "select * from lccnet where user='"+member+"'")
+    records = cur.fetchone()
+
+    return render_template('datamodification.html', records=records)
+
+
+@app.route('/order', methods=['POST', 'GET'])  # 管理區-訂單紀錄
 def order():
     if request.method == 'POST':
         ordernu = request.form['ordernu']
@@ -250,7 +279,7 @@ def order():
         return render_template('order.html', rows=rows)
 
 
-@app.route('/administrator', methods=['POST', 'GET'])
+@app.route('/administrator', methods=['POST', 'GET'])  # 管理區-管理員新增
 def administrator():
     if request.method == 'POST':
         user = request.form['user']
@@ -278,7 +307,7 @@ def administrator():
         return render_template('administrator.html')
 
 
-def get_product_details(product_id):
+def get_product_details(product_id):  # 查找商品資料
     # Connect to the SQLite database
     conn = sqlite3.connect('merged.db')
     cursor = conn.cursor()
@@ -295,7 +324,7 @@ def get_product_details(product_id):
         return None
 
 
-@app.route('/add_to_cart', methods=["POST"])
+@app.route('/add_to_cart', methods=["POST"])  # 加入購物車
 def add_to_cart():
     if 'user' not in session:
         flash(f'請先登入您的帳戶!', 'error')
@@ -332,7 +361,7 @@ def add_to_cart():
     return redirect(request.referrer)
 
 
-@app.route('/cart')
+@app.route('/cart')  # 購物車內容
 def cart():
     if 'user' not in session:
         flash(f'請先登入您的帳戶!', 'error')
@@ -353,7 +382,7 @@ def cart():
     return render_template('cart.html', cart_items=cart_items, total_price=total_price)
 
 
-@app.route('/remove_from_cart', methods=['POST'])
+@app.route('/remove_from_cart', methods=['POST'])  # 移除購物車中指定商品
 def remove_from_cart():
     if 'user' not in session:
         flash(f'請先登入您的帳戶!', 'error')
@@ -379,7 +408,7 @@ def remove_from_cart():
     return redirect('/cart')  # Redirect back to the cart page after removal
 
 
-@app.route('/checkout', methods=['POST'])
+@app.route('/checkout', methods=['POST'])  # 結帳
 def checkout():
     if 'user' not in session:
         flash(f'請先登入您的帳戶!', 'error')
@@ -419,7 +448,7 @@ def checkout():
         return redirect(request.referrer)
 
 
-@app.route('/clear_cart')
+@app.route('/clear_cart')  # 清除購物車中所有商品
 def clear_cart():
     if 'user' not in session:
         flash(f'請先登入您的帳戶!', 'error')
@@ -508,7 +537,7 @@ def productsonshelves():
                 for product_element in product_elements:
                     # 從每個商品元素中提取標題
                     title_element = product_element.find(
-                        'div', class_='sc-ALVnD jttWOh')
+                        'div', class_='sc-kKQOHL hjKVxV')
 
                     if title_element:
                         title = title_element.text.strip()
@@ -517,11 +546,11 @@ def productsonshelves():
                             existing_products.remove(title)
                         else:
                             price_element = product_element.find(
-                                'div', class_='sc-KzItE gRTtOW')
+                                'div', class_='sc-gIeZgt hEqCsd')
                             image_element = product_element.find(
                                 'img', class_='product-card__vertical__media product-card__vertical__media-tall')
                             link_element = product_element.find(
-                                'a', class_='sc-bSGrXo dvnSEx product-card__vertical product-card__vertical--hover new-product-card')
+                                'a', class_='sc-hQlIKd jnYvQx product-card__vertical product-card__vertical--hover new-product-card')
 
                             if price_element and image_element and link_element:
                                 price = price_element.text.strip()
@@ -626,6 +655,10 @@ def productsonshelves():
 
 # 關閉資料庫連接
         conn.close()
+
+# 這裡我們返回一個JSON響應，表明操作成功
+        flash("成功更新商品")
+        return redirect(url_for('productsonshelves'))
 
     else:
         return render_template('productsonshelves.html')

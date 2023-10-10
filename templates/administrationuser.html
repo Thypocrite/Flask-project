@@ -3,32 +3,44 @@
 {% block content %}
 
 <style>
-    .adm{
+    .adm {
         position: absolute;
         top: calc(30% - 100px);
         left: calc(45% - 200px);
         height: 800px;
-        width: 1000px;
+        width: 1200px;
         background-color: #D3D3D3;
         color: #191970;
         border-radius: 30px;
         padding: 10px;
-        font-size: 20px;
+        font-size: 24px;
+        overflow: scroll;
+        border-collapse: collapse;
     }
-    .admini input[type=text]{
-		width: 300px;
-		height: 40px;
-		background-color: #2F4F4F;
-		border: 1px solid rgba(255,255,255,0.6);
-		border-radius: 2px;
-		color: #F7F9FC;
-		font-family: 'Exo', sans-serif;
-		font-size: 18px;
-		font-weight: 400;
-		padding: 4px;
-		margin-top: 10px;
-	}
-    .admini input[type=submit]{
+
+    .adm thead {
+        background-color: #5F9EA0;
+        text-align: center;
+        padding: 8px;
+        color: #FFFFFF;
+        padding: 16px 8px;
+    }
+
+    .admini input[type=text] {
+        width: 300px;
+        height: 40px;
+        background-color: #DB7093;
+        border: 1px solid rgba(255, 255, 255, 0.6);
+        border-radius: 2px;
+        color: #F7F9FC;
+        font-family: 'Exo', sans-serif;
+        font-size: 20px;
+        font-weight: 400;
+        padding: 4px;
+        margin-top: 10px;
+    }
+
+    .admini input[type=submit] {
         width: 90px;
         height: 40px;
         background: #978989;
@@ -45,35 +57,37 @@
 
 <main>
     <div class="adm">
-        <h3>會員資料</h3>  
+        <h3>會員資料</h3>
         <div class="admini">
-            <form action = "/administrationuser" method ="post">
-                <input type ="text" placeholder ="member email ex:x@x" name = "member">
-                <input type = "submit" value = "搜尋">
-        <form action = "/administrationuser">
-            <table border = 5>
-                <thead>
-                   <td>會員ID</td>
-                   <td>帳號</td>
-                   <td>密碼</td>
-                   <td>名稱</td>
-                   <td>手機號碼</td>
-                   <td>生日</td>
-                   <td>地址</td>
-                   
-                </thead>
-                {% for row in rows %}
-                    <tr>
-                        <td>{{row[0]}}</td>
-                        <td>{{row[1]}}</td>
-                        <td>{{row[2]}}</td>
-                        <td>{{row[3]}}</td>
-                        <td>{{row[4]}}</td>
-                        <td>{{row[5]}}</td>
-                        <td>{{row[6]}}</td>
-                    </tr>
-                
-                {% endfor %}
-                
+            <form action="dataSearch" method="POST">
+                <input type="text" placeholder="member email ex:x@x" name="member">
+                <input type="submit" value="Search">
+            </form>
+        </div>
+
+        <table border=5>
+            <thead>
+                <td>會員ID</td>
+                <td>帳號</td>
+                <td>密碼</td>
+                <td>名稱</td>
+                <td>手機號碼</td>
+                <td>生日</td>
+                <td>地址</td>
+
+            </thead>
+            {% for row in rows %}
+            <tr>
+                <td>{{row[0]}}</td>
+                <td>{{row[1]}}</td>
+                <td>{{row[2]}}</td>
+                <td>{{row[3]}}</td>
+                <td>{{row[4]}}</td>
+                <td>{{row[5]}}</td>
+                <td>{{row[6]}}</td>
+            </tr>
+
+            {% endfor %}
+
 </main>
 {% endblock %}

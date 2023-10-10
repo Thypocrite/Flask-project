@@ -36,7 +36,13 @@
 			<input type="submit" name="productsonshelves" value="商品更新">
 			<p>此鍵將自動更新商品,成功後將有提示訊息顯示"成功"</p>
 			<ul class=flashes>
-				<li>{{ message }}</li>   
+                {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    {% for message in messages %}
+                        <li>{{ message }}</li>   
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
 			</ul>
 			
 </main>

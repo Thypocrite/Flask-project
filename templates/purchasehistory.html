@@ -15,7 +15,14 @@
         border-radius: 30px;
         padding: 20px;
         font-size: 25px;
+        overflow:scroll;
 	}
+    .pur thead {
+        background-color: #5F9EA0;
+        text-align: center;
+        padding: 8px;
+        color: #FFFFFF;
+      }
     
 </style>
 
@@ -23,13 +30,15 @@
     <div class="pur">
         <h3>購買紀錄</h3>
         <form action = "/purchasehistory">
-            <table border = 1>
+            <table border = 5>
                 <thead>
+                    <td>訂單編號</td>
                    <td>已購買品項</td>
                    <td>NT$</td>
                 </thead>
                 {% for row in rows %}
                     <tr>
+                        <td>{{row[6]}}</td>
                         <td>{{row[3]}}</td>
                         <td>{{row[4]}}</td>
                
