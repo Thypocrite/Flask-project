@@ -19,16 +19,20 @@
     border: 1px solid #ccc;
     display: inline-block;
     vertical-align: top;
+    transition: transform 0.3s ease-in-out;
   }
-
+  .product:hover {
+    transform: scale(1.05); /* 放大容器 */
+  }
   .product-title {
     height: 48px;
+    margin-bottom: 50px; /* 添加底部外边距，以与产品价格分隔 */
   }
 
   .product-price {
     color: red;
+    margin-top: 50px; /* 添加顶部外边距，以与产品名称分隔 */
   }
-
   .hover-effect {
     /* Add your default styles here */
     transition: transform 0.3s ease;
@@ -52,11 +56,11 @@
 
     <div class="product-list">
       {% for product in products %}
-      <div class="product">
+      <div class="product hover-effect">
         <a href="../salePage/{{ product[0] }}">
-          <img src="{{ product[3] }}" alt="{{ product[1] }}" class="hover-effect">
+          <img src="{{ product[3] }}" alt="{{ product[1] }}">
         </a>
-        <div class="product-title">{{ product[1] }}</div>
+        <h5><div class="product-title">{{ product[1] }}</div></h5>
         <div class="product-price">{{ product[2] }}</div>
         <nav class="level">
           <div class="level-left">
@@ -65,18 +69,15 @@
             </div>
           </div>
           <div class="level-right">
-
             <form action="../add_to_cart" method="POST">
               <input type="hidden" name="product_id" value="{{ product[0] }}">
               <input type="submit" class="button is-link" name="add_to_cart" value="加入購物車"><br>
             </form>
           </div>
         </nav>
-
       </div>
       {% endfor %}
     </div>
-
   </div>
 </body>
 
