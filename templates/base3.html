@@ -54,6 +54,33 @@
             padding: 20px;
             font-size: 25px;
         }
+        .flash-messages {
+            font-size: 24px;
+            text-align: center;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+    
+        .success {
+            background-color: rgba(0, 255, 0, 0.2);
+            /* Transparent green background */
+            color: green;
+            padding: 10px;
+            border-radius: 6px;
+        }
+    
+        .error {
+            background-color: rgba(255, 0, 0, 0.2);
+            /* Transparent red background */
+            color: red;
+            padding: 10px;
+            border-radius: 6px;
+        }
+    
+        .info {
+            background-color: rgba(0, 0, 255, 0.2);
+            color: blue;
+        }
 
     </style>
 
@@ -67,11 +94,6 @@
                 <img src="https://logo.com/image-cdn/images/kts928pd/production/6a1f3266ef394695b351e49e942d53a2dced613c-407x393.png?w=640&q=72"
                     alt="site logo" style="max-height: 70px">
             </a>
-            <a class="navbar-burger" id="burger">
-                <span></span>
-                <span></span>
-                <span></span>
-            </a>
         </div>
 
         <div class="navbar-menu" id="nav-links">
@@ -84,6 +106,16 @@
         </div>
     
     </nav>
+     <!-- Display flash messages if they exist -->
+     {% with messages = get_flashed_messages(with_categories=true) %}
+     {% if messages %}
+     <ul class="flash-messages">
+         {% for category, message in messages %}
+         <li class="{{ category }}">{{ message }}</li>
+         {% endfor %}
+     </ul>
+     {% endif %}
+     {% endwith %}
     <menu>    
         <div class="menu">
         <ul>

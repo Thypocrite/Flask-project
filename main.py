@@ -253,13 +253,18 @@ def datam():
 
 @app.route('/dataSearch', methods=['POST', 'GET'])  # 管理區-會員資料修改-搜尋
 def dataSearch():
+
     member = request.form.get("member")
     connection = sqlite3.connect('merged.db')
     cur = connection.cursor().execute(
         "select * from lccnet where user='"+member+"'")
     records = cur.fetchone()
 
-    return render_template('datamodification.html', records=records)
+    if records:
+        return render_template('datamodification.html', records=records)
+    else:
+        flash("請輸入正確的帳號名稱!", "error")
+        return redirect(request.referrer)
 
 
 @app.route('/order', methods=['POST', 'GET'])  # 管理區-訂單紀錄
@@ -327,7 +332,7 @@ def get_product_details(product_id):  # 查找商品資料
 @app.route('/add_to_cart', methods=["POST"])  # 加入購物車
 def add_to_cart():
     if 'user' not in session:
-        flash(f'請先登入您的帳戶!', 'error')
+        flash('請先登入您的帳戶!', 'error')
         return redirect(request.referrer)
 
     product_id = request.form.get('product_id')
@@ -356,7 +361,7 @@ def add_to_cart():
 
         flash(f'商品{title}已成功加入購物車!', 'success')
     else:
-        flash(f'商品已在您的購物車中!', 'error')
+        flash('商品已在您的購物車中!', 'error')
 
     return redirect(request.referrer)
 
@@ -364,7 +369,7 @@ def add_to_cart():
 @app.route('/cart')  # 購物車內容
 def cart():
     if 'user' not in session:
-        flash(f'請先登入您的帳戶!', 'error')
+        flash('請先登入您的帳戶!', 'error')
         return redirect(request.referrer)
     user = session['user']
     conn = sqlite3.connect('merged.db')
@@ -385,7 +390,7 @@ def cart():
 @app.route('/remove_from_cart', methods=['POST'])  # 移除購物車中指定商品
 def remove_from_cart():
     if 'user' not in session:
-        flash(f'請先登入您的帳戶!', 'error')
+        flash('請先登入您的帳戶!', 'error')
         return redirect(request.referrer)
 
     product_id = request.form.get('product_id')
@@ -411,7 +416,7 @@ def remove_from_cart():
 @app.route('/checkout', methods=['POST'])  # 結帳
 def checkout():
     if 'user' not in session:
-        flash(f'請先登入您的帳戶!', 'error')
+        flash('請先登入您的帳戶!', 'error')
         return redirect(request.referrer)
 
     user = session['user']
@@ -441,17 +446,17 @@ def checkout():
         conn.close()
 
         # Redirect to a thank you page or order summary page
-        flash(f'感謝您的消費!', 'success')
+        flash('感謝您的消費!', 'success')
         return render_template('checkout.html', cart_items=cart_items, total_price=total_price, order_id=order_id, order_date=order_date)
     else:
-        flash(f'您的購物車目前沒有商品!', 'error')
+        flash('您的購物車目前沒有商品!', 'error')
         return redirect(request.referrer)
 
 
 @app.route('/clear_cart')  # 清除購物車中所有商品
 def clear_cart():
     if 'user' not in session:
-        flash(f'請先登入您的帳戶!', 'error')
+        flash('請先登入您的帳戶!', 'error')
         return redirect(request.referrer)
 
     user = session['user']
@@ -461,7 +466,7 @@ def clear_cart():
     conn.commit()
     conn.close()
 
-    flash(f'已清空您的購物車!', 'success')
+    flash('已清空您的購物車!', 'success')
     return redirect('/cart')
 
 
