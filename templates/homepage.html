@@ -13,18 +13,24 @@
     vertical-align: top;
     transition: transform 0.3s ease-in-out;
   }
+
   .product:hover {
-    transform: scale(1.05); /* 放大容器 */
+    transform: scale(1.05);
+    /* 放大容器 */
   }
+
   .product-title {
     height: 48px;
-    margin-bottom: 50px; /* 添加底部外边距，以与产品价格分隔 */
+    margin-bottom: 50px;
+    /* 添加底部外边距，以与产品价格分隔 */
   }
 
   .product-price {
     color: red;
-    margin-top: 50px; /* 添加顶部外边距，以与产品名称分隔 */
+    margin-top: 50px;
+    /* 添加顶部外边距，以与产品名称分隔 */
   }
+
   .hover-effect {
     /* Add your default styles here */
     transition: transform 0.3s ease;
@@ -61,7 +67,9 @@
         <a href="../salePage/{{ rec[0] }}">
           <img src="{{ rec[3] }}" alt="{{ rec[1] }}">
         </a>
-        <h5><div class="product-title">{{ rec[1] }}</div></h5>
+        <h5>
+          <div class="product-title">{{ rec[1] }}</div>
+        </h5>
         <div class="product-price">{{ rec[2] }}</div>
         <nav class="level">
           <div class="level-left">
@@ -80,41 +88,45 @@
       {% endfor %}
     </div>
 
-
-
-    <div class="testimonial_slider owl-carousel">
-      <div class="image-container">
-        <img class="" src="{{ url_for('static', filename='images/i2.jpg') }}" alt="">
-
-      </div>
-      <div class="image-container">
-        <img class="" src="{{ url_for('static', filename='images/i3.jpg') }}" alt="">
-
-      </div>
-      <div class="image-container">
-        <img class="" src="{{ url_for('static', filename='images/i4.jpg') }}" alt="">
-
-      </div>
-      <div class="image-container">
-        <img class="" src="{{ url_for('static', filename='images/i5.jpg') }}" alt="">
-
-      </div>
-      <div class="image-container">
-        <img class="" src="{{ url_for('static', filename='images/i6.jpg') }}" alt="">
-      </div>
-    </div>
   </div>
 
   <footer class="footer-area section_gap">
     <section class="testimonial_area section_gap">
+
+      <div class="testimonial_slider owl-carousel">
+        <div class="image-container">
+          <img class="" src="{{ url_for('static', filename='images/i2.jpg') }}" alt="">
+
+        </div>
+        <div class="image-container">
+          <img class="" src="{{ url_for('static', filename='images/i3.jpg') }}" alt="">
+
+        </div>
+        <div class="image-container">
+          <img class="" src="{{ url_for('static', filename='images/i4.jpg') }}" alt="">
+
+        </div>
+        <div class="image-container">
+          <img class="" src="{{ url_for('static', filename='images/i5.jpg') }}" alt="">
+
+        </div>
+        <div class="image-container">
+          <img class="" src="{{ url_for('static', filename='images/i6.jpg') }}" alt="">
+        </div>
+      </div>
+      <br>
+
       <div class="container">
+        <h2 class="text-center">熱門商品</h2>
         <div class="product-list">
           {% for product in products %}
           <div class="product hover-effect">
             <a href="../salePage/{{ product[0] }}">
               <img src="{{ product[3] }}" alt="{{ product[1] }}">
             </a>
-            <h5><div class="product-title">{{ product[1] }}</div></h5>
+            <h5>
+              <div class="product-title">{{ product[1] }}</div>
+            </h5>
             <div class="product-price">{{ product[2] }}</div>
             <nav class="level">
               <div class="level-left">
@@ -134,6 +146,7 @@
         </div>
       </div>
     </section>
+
     <section class="accomodation_area section_gap">
       <div class="container">
         <div class="section_title text-center">
