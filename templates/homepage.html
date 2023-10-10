@@ -34,56 +34,60 @@
     </div>
   </section>
   <div class="container">
-    <div class="product-list">
-      {% for product in products %}
-      <a href="salePage/{{ product[0] }}">
-        <div class="product">
-          <form action="add_to_cart" method="post">
-            <img src="{{ product[3] }}" alt="{{ product[1] }}">
-            <h3>{{ product[1] }}</h3>
-            <p>{{ product[2] }}</p>
-            <!-- Add other product details and formatting as needed -->
-            <input type="hidden" name="product_id" value="{{ product[0] }}">
-            <input type="hidden" name="page_url" value="/homepage">
-            <button type="submit" class="button">加入購物車</button>
-          </form>
-          <a href="salePage/{{ product[0] }}" class="button">商品詳情</a>
+    <h2 class="text-center">推薦商品</h2>
+    
 
-        </div>
-      </a>
-      {% if loop.index % 4 == 0 %}
-      <div style="clear: both;"></div> <!-- Clear the float every four products -->
-
-      {% endif %}
-
-      {% endfor %}
-    </div>
+    <div class="testimonial_slider owl-carousel">
+      <div class="image-container">
+          <img class="" src="{{ url_for('static', filename='images/i2.jpg') }}" alt="">
+          
+      </div>    
+      <div class="image-container">
+          <img class="" src="{{ url_for('static', filename='images/i3.jpg') }}" alt="">
+          
+      </div>
+      <div class="image-container">
+          <img class="" src="{{ url_for('static', filename='images/i4.jpg') }}" alt="">
+          
+      </div>    
+      <div class="image-container">
+          <img class="" src="{{ url_for('static', filename='images/i5.jpg') }}" alt="">
+          
+      </div>
+      <div class="image-container">
+          <img class="" src="{{ url_for('static', filename='images/i6.jpg') }}" alt="">
+      </div>
+  </div>
   </div>
 
   <footer class="footer-area section_gap">
     <section class="testimonial_area section_gap">
         <div class="container">
-            <div class="testimonial_slider owl-carousel">
-                <div class="image-container">
-                    <img class="" src="{{ url_for('static', filename='images/i2.jpg') }}" alt="">
-                    
-                </div>    
-                <div class="image-container">
-                    <img class="" src="{{ url_for('static', filename='images/i3.jpg') }}" alt="">
-                    
-                </div>
-                <div class="image-container">
-                    <img class="" src="{{ url_for('static', filename='images/i4.jpg') }}" alt="">
-                    
-                </div>    
-                <div class="image-container">
-                    <img class="" src="{{ url_for('static', filename='images/i5.jpg') }}" alt="">
-                    
-                </div>
-                <div class="image-container">
-                    <img class="" src="{{ url_for('static', filename='images/i6.jpg') }}" alt="">
-                </div>
-            </div>
+          <div class="product-list">
+            {% for product in products %}
+            <a href="salePage/{{ product[0] }}">
+              <div class="product">
+                <form action="add_to_cart" method="post">
+                  <img src="{{ product[3] }}" alt="{{ product[1] }}">
+                  <h3>{{ product[1] }}</h3>
+                  <p>{{ product[2] }}</p>
+                  <!-- Add other product details and formatting as needed -->
+                  <input type="hidden" name="product_id" value="{{ product[0] }}">
+                  <input type="hidden" name="page_url" value="/homepage">
+                  <button type="submit" class="button">加入購物車</button>
+                </form>
+                <a href="salePage/{{ product[0] }}" class="button">商品詳情</a>
+      
+              </div>
+            </a>
+            {% if loop.index % 4 == 0 %}
+            <div style="clear: both;"></div> <!-- Clear the float every four products -->
+      
+            {% endif %}
+      
+            {% endfor %}
+          </div>
+            
         </div>
     </section>
     <section class="accomodation_area section_gap">

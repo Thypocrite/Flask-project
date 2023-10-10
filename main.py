@@ -5,6 +5,8 @@ from selenium import webdriver
 from datetime import date
 import time
 import re
+import recommendations
+from recommendations import get_top_n_recommendations
 
 
 app = Flask(__name__)
