@@ -5,8 +5,9 @@ from selenium import webdriver
 from datetime import date
 import time
 import re
-import recommendations
-from recommendations import get_top_n_recommendations
+import pandas as pd
+from surprise import Dataset, Reader, SVD
+from surprise.model_selection import cross_validate
 
 
 app = Flask(__name__)
@@ -25,9 +26,17 @@ def pageNotFound(error):
 
 @app.route('/homepage')  # 首頁
 def homepage():
+    if "user" not in session:
+        user_id = "w@q"
+    else:
+        user_id = session['user']
+
+    top_recommendations = get_top_n_recommendations(user_id, n=4)
+    recommendations = [tuple(row) for row in top_recommendations.values]
+
     products = [(6529468, '【PS5】胡鬧廚房！全都好吃 (原譯：煮過頭 吃到飽)《中文版》', 'NT$880', '//diz36nn4q02zr.cloudfront.net/webapi/imagesV3/Cropped/SalePage/6529468/0/637973753679270000?v=1'), (6529560, '【PS5】惡魔靈魂 重製版《中文版》', 'NT$1,590', '//diz36nn4q02zr.cloudfront.net/webapi/imagesV3/Cropped/SalePage/6529560/0/638229724827600000?v=1'), (6529581, '【PS5】跑車浪漫旅 7 (GT7)《中文版》', 'NT$1,990', '//diz36nn4q02zr.cloudfront.net/webapi/imagesV3/Cropped/SalePage/6529581/0/638222480068400000?v=1'), (6529660, '【PS5】鬼線：東京 GhostWire:Tokyo《中文版》', 'NT$1,790', '//diz36nn4q02zr.cloudfront.net/webapi/imagesV3/Cropped/SalePage/6529660/0/638282413571300000?v=1'), (6542048, '【PS5】死亡回歸 Returnal《中文版》', 'NT$1,590', '//diz36nn4q02zr.cloudfront.net/webapi/imagesV3/Cropped/SalePage/6542048/0/638282366902300000?v=1'), (6542178, '【PS5】小小大冒險《中文版》', 'NT$1,790', '//diz36nn4q02zr.cloudfront.net/webapi/imagesV3/Cropped/SalePage/6542178/0/638260616442070000?v=1'),
                 (6571086, '【PS5】惡魔獵人 5 特別版《中文版》', 'NT$1,190', '//diz36nn4q02zr.cloudfront.net/webapi/imagesV3/Cropped/SalePage/6571086/0/637903759896270000?v=1'), (6600410, '【PS5】魔法氣泡™ 特趣思™ 俄羅斯方塊™ 2《中文版》', 'NT$1,290', '//diz36nn4q02zr.cloudfront.net/webapi/imagesV3/Cropped/SalePage/6600410/0/638258139715200000?v=1'), (6615536, '【PS5】漫威蜘蛛人：邁爾斯摩拉斯 終極版《中文版》', 'NT$1,990', '//diz36nn4q02zr.cloudfront.net/webapi/imagesV3/Cropped/SalePage/6615536/0/638291232246100000?v=1'), (6637292, '【PS5】真人快打 11 終極版《簡體中文版》', 'NT$699', '//diz36nn4q02zr.cloudfront.net/webapi/imagesV3/Cropped/SalePage/6637292/0/638223481859970000?v=1'), (6755107, '【PS5】仁王 收藏輯《中文版》', 'NT$1,590', '//diz36nn4q02zr.cloudfront.net/webapi/imagesV3/Cropped/SalePage/6755107/0/638273600726770000?v=1'), (6773543, '【PS5】人中之龍 7 光與闇的去向 國際版《中文版》', 'NT$1,490', '//diz36nn4q02zr.cloudfront.net/webapi/imagesV3/Cropped/SalePage/6773543/0/638260616775730000?v=1')]
-    return render_template("homepage.html", products=products)
+    return render_template("homepage.html", products=products, recommendations=recommendations)
 
 
 @app.route('/category/<category_name>', methods=["GET", "POST"])  # 商品分類頁
@@ -669,6 +678,66 @@ def productsonshelves():
 
     else:
         return render_template('productsonshelves.html')
+
+
+def get_top_n_recommendations(user_id, n=4):
+    # 连接到SQLite数据库
+    conn = sqlite3.connect('merged.db')
+    members = pd.read_sql_query('SELECT * FROM lccnet', conn)
+    products = pd.read_sql_query('SELECT * FROM products', conn)
+    purchases = pd.read_sql_query('SELECT * FROM totall', conn)
+    conn.close()
+    # 计算年龄并进行分组
+    CURRENT_YEAR = 2023
+    members['age'] = CURRENT_YEAR - \
+        pd.to_datetime(members['birthday'], format='%Y-%m-%d').dt.year
+    bins = [15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 100]
+    labels = ['15-19', '20-24', '25-29', '30-34', '35-39',
+              '40-44', '45-49', '50-54', '55-59', '60+']
+    members['age_group'] = pd.cut(
+        members['age'], bins=bins, labels=labels, right=False)
+
+    # 将购买历史和用户年龄组合在一起
+    purchases = purchases.merge(members[['user', 'age_group']], on='user')
+
+    # 模拟"评分"列，你可以根据需要替换这个逻辑
+    purchases['purchase_dummy'] = 1
+
+    # 使用协同过滤模型
+    reader = Reader(rating_scale=(0, 1))  # 我们的评分列是购买/未购买
+    data = Dataset.load_from_df(
+        purchases[['user', 'salePageId', 'purchase_dummy']], reader)
+
+    # 使用SVD模型
+    model = SVD()
+    cross_validate(model, data, measures=['RMSE'], cv=5, verbose=True)
+
+    # 训练模型
+    trainset = data.build_full_trainset()
+    model.fit(trainset)
+
+    # 函数来获取推荐
+    # 获取用户还未购买过的商品
+    all_products = products['salePageId'].unique()
+    purchased_products = purchases[purchases['user']
+                                   == user_id]['salePageId'].unique()
+    not_purchased_products = set(all_products) - set(purchased_products)
+
+    # 预测用户对未购买商品的评分
+    predictions = []
+    for product_id in not_purchased_products:
+        predictions.append(
+            (product_id, model.predict(user_id, product_id).est))
+
+    # 获取评分最高的前n个商品
+    top_n_product_ids = [x[0] for x in sorted(
+        predictions, key=lambda x: x[1], reverse=True)[:n]]
+
+    # 获取这些商品的详细信息
+    top_n_products = products[products['salePageId'].isin(
+        top_n_product_ids)][['salePageId', 'title', 'price', 'image_url']]
+
+    return top_n_products
 
 
 if __name__ == "__main__":

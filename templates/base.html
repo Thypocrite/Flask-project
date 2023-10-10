@@ -86,33 +86,38 @@
         cursor: pointer;
         font-size: 16px;
     }
+
     .navbar {
         background-color: #3498db;
     }
 
-
     .sticky {
-        background-color: #3498db ;
+        background-color: #3498db;
         /* 自定义样式 */
     }
-     /* 设置我的帳戶链接的初始颜色 */
-     .navbar-item.my-account {
-        color: #FF0000; /* 这里设置您想要的颜色值 */
+
+    /* 设置我的帳戶链接的初始颜色 */
+    .navbar-item.my-account {
+        color: #FF0000;
+        /* 这里设置您想要的颜色值 */
     }
 
     /* 设置購物車链接的初始颜色 */
     .navbar-item.shopping-cart {
-        color: #00FF00; /* 这里设置您想要的颜色值 */
+        color: #00FF00;
+        /* 这里设置您想要的颜色值 */
     }
 </style>
 
 <body>
-    
+
     <nav class="navbar navbar-expand-lg sticky-top">
         <!-- Brand and toggle get grouped for better mobile display -->
-        <a class="navbar-brand logo_h" href="/homepage"><img src="{{ url_for('static', filename='images/Logo.png') }}" alt="" style="max-height: 70px"></a>
+        <a class="navbar-brand logo_h" href="/homepage"><img src="{{ url_for('static', filename='images/Logo.png') }}"
+                alt="" style="max-height: 70px"></a>
         <h4 class="sec_h4">Gameing time</h4>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="true" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="true" aria-label="Toggle navigation">
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
@@ -120,9 +125,10 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse offset " id="navbarSupportedContent">
             <ul class="nav navbar menu_nav ">
-                <li class="nav-item"><a class="nav-link" href="/">首頁</a></li> 
+                <li class="nav-item"><a class="nav-link" href="/">首頁</a></li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">
                         遊戲
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -131,7 +137,7 @@
                     </ul>
                 </li>
             </ul>
-        </div> 
+        </div>
         <div class="navbar-end" style="display: flex; align-items: center;">
             <form action="../search" class="search-form" method="GET" style="margin-right: 10px;">
                 <div class="search-area">
@@ -160,7 +166,7 @@
     {% endwith %}
     <!-- main -->
     {% block content %}{% endblock %}
-   
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{{ url_for('static', filename='js/hidebar.js') }}"></script>
     <script src="{{ url_for('static', filename='js/jquery-3.2.1.min.js') }}"></script>
@@ -168,21 +174,22 @@
     <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
     <script src="{{ url_for('static', filename='vendors/owl-carousel/owl.carousel.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/jquery.ajaxchimp.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='vendors/bootstrap-datepicker/bootstrap-datetimepicker.min.js') }}"></script>
+    <script
+        src="{{ url_for('static', filename='vendors/bootstrap-datepicker/bootstrap-datetimepicker.min.js') }}"></script>
     <script src="{{ url_for('static', filename='vendors/nice-select/js/jquery.nice-select.js') }}"></script>
     <script src="{{ url_for('static', filename='js/stellar.js') }}"></script>
     <script src="{{ url_for('static', filename='vendors/lightbox/simpleLightbox.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/custom.js') }}"></script>
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             var $navbar = $(".navbar");
-        
+
             // 手动触发一次滚动事件
             $(window).trigger('scroll');
-        
-            $(window).scroll(function() {
+
+            $(window).scroll(function () {
                 var scrollTop = $(window).scrollTop();
-        
+
                 if (scrollTop >= 0) {
                     $navbar.addClass("sticky");
                 } else {
@@ -192,7 +199,7 @@
         });
     </script>
     {% block script %}{% endblock %}
-    
+
 </body>
 
 
